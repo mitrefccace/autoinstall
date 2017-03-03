@@ -1,0 +1,12 @@
+{
+     apps: [{
+	name: "aserver",
+	script: "./aserver/app.js",
+	cwd: "./aserver"
+     },
+     {
+	name: "userver",
+	script: "./userver/app.js",
+	cwd: "./userver"
+     }]
+}
