@@ -105,5 +105,22 @@ subprocess.call(['pm2','start','process.json'])
 
 sleep(1.5)
 
+#open urls that user wants to access
+print 'Servers started, and ready to access webpages. Please answer y/n for each of the following:'
+sleep(2)
+ans1 = raw_input('Do you want to open the CSR Portal? (y/n)')
+ans2 = raw_input('Do you want to open the Customer Portal? (y/n)')
+ans3 = raw_input('Do you want to open the Management Portal? (y/n)')
+print 'Opening selected portals. Edit the hostname and port for access in the browser.'
+sleep(5)
+if ans1 == 'y':
+    subprocess.call(['xdg-open', 'https://hostname:12345/login.html'])
+if ans2 == 'y':
+    subprocess.call(['xdg-open', 'https://hostname:12345/complaint.html'])
+if ans3 == 'y':
+    subprocess.call(['xdg-open', 'https://hostname:12345/dashboard'])
+
+    
 #command for testing a relevant URL; e.g. for acedirect
 #subprocess.call(['wget', url, '--no-check-certificate'])
+
