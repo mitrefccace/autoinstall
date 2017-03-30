@@ -26,15 +26,53 @@ The installation scripts require the following:
 
 * Python 2.7 is installed on the user machine.
 
+* The Asterisk installation script also requires that the public/private key pair 
+for Git must be added to /root/.ssh and their permissions must be 600. For more 
+information on generating and adding the keys, refer to [this link]
+(https://help.github.com/articles/connecting-to-github-with-ssh/)
+
 
 ## Instructions for Use
 1. Open the parent directory where the autoinstall repository will be placed.
 
-2. Clone this repository and open the autoinstall folder by running "cd 
-autoinstall" in the command prompt.  
+2. Clone this repository and open the autoinstall folder by running 
+```sh cd 
+autoinstall
+```
+ in the command prompt.  
 
 3. To run the adinstall.py script, open the adinstall directory and then run the script using the 
-command "python ./adinstall.py".
+command 
+```sh
+python ./adinstall.py
+```
 
 4. To run the auserverinstall.py script, open the auserverinstall directory and then run the script 
-using the command "python ./auserverinstall.py".
+using the command 
+```sh
+python ./auserverinstall.py
+```
+
+5. To run the asteriskinstall.py script, use the command
+
+```sh
+python ./asteriskinstall.py \<public_ip> \<local_ip> \<dial_in> \<stun_server> \<crt_file> \<crt_key> \<ss_crt> \<ss_ca_crt>
+```
+
+where the options are as follows:
+
+* \<public_ip>: The external/public IP address of the Asterisk server
+
+* \<local_ip>: The private/local IP address of the Asterisk server
+
+* \<dial_in>: Dial-in number
+
+* \<stun_server>: STUN/TURN server address:port (we recommend building a dedicated STUN server, but a public STUN server can be used if desired)
+
+* \<crt_file>: SSL certificate for Asterisk server
+
+* \<crt_key>: Private key for Asterisk server 
+
+* \<ss_crt>: Self-signed cert file for server (follow [these instructions](https://wiki.asterisk.org/wiki/display/AST/Secure+Calling+Tutorial) to create a self-signed cert for Asterisk)
+
+* \<ss_ca_crt>: The CA file used to generate the above self-signed cert
