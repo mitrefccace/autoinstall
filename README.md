@@ -36,8 +36,8 @@ information on generating and adding the keys, refer to [this link]
 1. Open the parent directory where the autoinstall repository will be placed.
 
 2. Clone this repository and open the autoinstall folder by running 
-```sh cd 
-autoinstall
+```sh 
+cd autoinstall
 ```
  in the command prompt.  
 
@@ -53,7 +53,12 @@ using the command
 python ./auserverinstall.py
 ```
 
-5. To run the asteriskinstall.py script, use the command
+5. To run the asteriskinstall.py script, open the shell as sudo with the command
+```sh
+sudo -i
+```
+.
+After configuring the proxy, run the script using the command
 
 ```sh
 python ./asteriskinstall.py \<public_ip> \<local_ip> \<dial_in> \<stun_server> \<crt_file> \<crt_key> \<ss_crt> \<ss_ca_crt>
