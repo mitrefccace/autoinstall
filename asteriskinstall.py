@@ -28,6 +28,8 @@ subprocess.call(['./contrib/scripts/install_prereq', 'install'], cwd = '/usr/src
 subprocess.call(['./configure', '--with-pjproject-bundled'], cwd = '/usr/src/asterisk-14.2.1')
 subprocess.call(['make'], cwd= '/usr/src/asterisk-14.2.1')
 subprocess.call(['make', 'install'], cwd = '/usr/src/asterisk-14.2.1')
+subprocess.call(['make', 'samples'], cwd = '/usr/src/asterisk-14.2.1')
+subprocess.call(['make', 'config'], cwd = '/usr/src/asterisk-14.2.1')
 
 subprocess.call('echo "/usr/local/lib? > /etc/ld.so.conf.d/usr_local.conf', shell=True)
 subprocess.call(['/sbin/ldconfig'])
@@ -38,8 +40,8 @@ subprocess.call(['ssh-keyscan', 'github.com', '>>', '/root/.ssh/known_hosts'], c
 # pull down confi/media files and add to /etc/asterisk and /var/lib/asterisk/sounds, respectively
 subprocess.call(['git', 'clone', 'https://github.com/mitrefccace/asterisk.git'], cwd = '/root')
 subprocess.call(['git', 'checkout', 'AD'], cwd = '/root/asterisk')
-subprocess.call(' yes | cp -rf asterisk-configs/* /etc/asterisk', shell=True, cwd = '/root/asterisk')
-subprocess.call('yes | cp -rf asterisk-videos-audios/sounds/* /var/lib/asterisk/sounds/', shell=True, cwd = '/root/asterisk')
+subprocess.call('cp -rf asterisk-configs/* /etc/asterisk', shell=True, cwd = '/root/asterisk')
+subprocess.call('cp -rf asterisk-videos-audios/sounds/* /var/lib/asterisk/sounds/', shell=True, cwd = '/root/asterisk')
 
 subprocess.call('sed -i -e "s/<public_ip>/' + sys.argv[1] + '/g" pjsip.conf', shell=True, cwd = '/etc/asterisk')
 subprocess.call('sed -i -e "s/<local_ip>/' + sys.argv[2] + '/g" pjsip.conf', shell=True, cwd = '/etc/asterisk')

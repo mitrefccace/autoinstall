@@ -74,7 +74,7 @@ where the options are as follows:
 
 * \<stun_server>: STUN/TURN server address:port (we recommend building a dedicated STUN server, but a public STUN server can be used if desired)
 
-* \<crt_file>: SSL certificate for Asterisk server
+* \<crt_file>: SSL certificate for Asterisk server (generating using a Certificate Authority such as GoDaddy)
 
 * \<crt_key>: Private key for Asterisk server 
 
