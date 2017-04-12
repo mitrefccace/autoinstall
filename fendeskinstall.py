@@ -80,4 +80,4 @@ subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
 fendesk.configure() #comment this line out if you already have a config.json that is properly configured and encoded
 
 #start fendesk
-subproces.call(['node', 'app.js'], cwd = fendesk.name)
+subprocess.call(['node', 'app.js'], cwd = fendesk.name)
