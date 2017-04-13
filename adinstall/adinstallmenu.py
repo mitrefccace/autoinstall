@@ -61,8 +61,11 @@ class Repository:
                 print 'Invalid input. Must enter "y" or "n".'
 
  
-# Main definition - constants
-menu_actions  = {}  
+# Initialize menu options and process.json
+menu_actions  = {} 
+process = {}
+process['apps'] = []
+ 
  
 # =======================
 #     MENUS FUNCTIONS
@@ -95,11 +98,6 @@ def exec_menu(choice):
 # Menu 1
 def acedirectinstall():
     acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git','adserver.js')
-#     if install1 == True:
-#          ans = raw_input('Warning: ACE Direct has already been installed. Do you wish to re-install? (y/n)' % self.name)
-#          if ans == 'n':
-#              menu_actions['main_menu']()
-#              return
     print "Installing ACE Direct \n"
     acedirect.pull()
     subprocess.call(['npm', 'install', '-g', 'bower'])
@@ -107,8 +105,14 @@ def acedirectinstall():
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
     acedirect.install()
     acedirect.configure()
-    sleep(2)
+    process['apps'].append({  
+        'name': 'acedirect',
+        'script': './acedirect/adserver.js',
+        'cwd': './acedirect'
+    })
     print "ACE Direct installation complete. Returning to main menu..."
+    sys.stdout.flush()
+    sleep(2)
     menu_actions['main_menu']()
     return
  
@@ -116,16 +120,17 @@ def acedirectinstall():
 # Menu 2
 def acrcdrinstall():
     acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git','app.js')
-#    if install2 == True:
-#        ans = raw_input('Warning: ACR-CDR has already been installed. Do you wish to re-install? (y/n)' % self.name)
-#        if ans == 'n':
-#            menu_actions['main_menu']()
-#            return
     print "Installing ACR-CDR \n"
     acrcdr.pull()
     acrcdr.install()
     acrcdr.configure()
+    process['apps'].append({  
+        'name': 'acrcdr',
+        'script': './acr-cdr/app.js',
+        'cwd': './acr-cdr'
+    })
     print "ACR-CDR installation complete. Returning to main menu..."
+    sys.stdout.flush()
     sleep(2)
     menu_actions['main_menu']()
     return
@@ -133,29 +138,28 @@ def acrcdrinstall():
 # Back to main menu
 def mgmtinstall():
     mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git','server-db.js')
-#    if install3 == True:
-#         ans = raw_input('Warning: Management portal has already been installed. Do you wish to re-install? (y/n)' % self.name)
-#         if ans == 'n':
-#             menu_actions['main_menu']()
-#             return
     mgmt.pull()
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
     mgmt.configure()
-    sleep(2)
+    process['apps'].append({  
+        'name': 'mgmt',
+        'script': './managementportal/server-db.js',
+        'cwd': './managementportal'
+    })
     print "Management portal installation complete. Returning to main menu..."
+    sys.stdout.flush()
+    sleep(2)
     menu_actions['main_menu']()
+    return
  
 # Exit program
 def finish():
-    print 'Starting servers of the installed components...'
+    print 'Writing process.json and starting servers of the installed components...'
+    with open('process.json', 'w') as outfile:  
+        json.dump(process, outfile)
     subprocess.call(['pm2','start','process.json'])
     sys.exit()
-    
-#prevent from re-running the same install
-#install1 = False
-#install2 = False
-#install3 = False 
 
     
 # =======================
@@ -165,9 +169,9 @@ def finish():
 # Menu definition
 menu_actions = {
     'main_menu': main_menu,
-    '1': acedirectinstall(),
-    '2': acrcdrinstall(),
-    '3': mgmtinstall(),
+    '1': acedirectinstall,
+    '2': acrcdrinstall,
+    '3': mgmtinstall,
     '0': finish,
 }
  
@@ -186,10 +190,15 @@ if __name__ == "__main__":
     if dist != 'centos' and dist != 'redhat':
         print 'Installation script can only be run on CentOS or RedHat. Terminating...'
         quit()
+    #stop all processes
+    subprocess.call(['pm2','kill'])
     #set up hashconfig
+    print 'Installing HashConfig tool for configuration process..."
     hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git','hconfig.js')
     hashconfig.pull()
     hashconfig.install()
-
+    print 'HashConfig installation complete.'
+    sys.stdout.flush()
+    sleep(2)
     # Launch main menu
     main_menu()
