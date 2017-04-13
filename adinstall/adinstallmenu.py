@@ -69,9 +69,7 @@ menu_actions  = {}
 # =======================
  
 # Main menu
-def main_menu():
-    
-    print "Welcome,\n"
+def main_menu():   
     print "Please choose one of the following options:"
     print "1. Install ACE Direct"
     print "2. Install ACR-CDR"
@@ -79,7 +77,6 @@ def main_menu():
     print "\n0. Finish installation process"
     choice = raw_input(" >>  ")
     exec_menu(choice)
- 
     return
  
 # Execute menu
@@ -96,51 +93,57 @@ def exec_menu(choice):
     return
  
 # Menu 1
-def acedirect():
-    if install1 = True:
-         ans = raw_input('Warning: ACE Direct has already been installed. Do you wish to re-install? (y/n)' % self.name)
-         if ans == 'n':
-             menu_actions['main_menu']()
-             return
+def acedirectinstall():
+    acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git','adserver.js')
+#     if install1 == True:
+#          ans = raw_input('Warning: ACE Direct has already been installed. Do you wish to re-install? (y/n)' % self.name)
+#          if ans == 'n':
+#              menu_actions['main_menu']()
+#              return
     print "Installing ACE Direct \n"
     acedirect.pull()
     subprocess.call(['npm', 'install', '-g', 'bower'])
     subprocess.call(['npm','install','pm2','-g'])
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
     acedirect.install()
-    acedirect.configure()   
-    install1 = True             
+    acedirect.configure()
+    sleep(2)
+    print "ACE Direct installation complete. Returning to main menu..."
     menu_actions['main_menu']()
     return
  
  
 # Menu 2
-def acrcdr():
-    if install2 = True:
-        ans = raw_input('Warning: ACR-CDR has already been installed. Do you wish to re-install? (y/n)' % self.name)
-        if ans == 'n':
-            menu_actions['main_menu']()
-            return
+def acrcdrinstall():
+    acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git','app.js')
+#    if install2 == True:
+#        ans = raw_input('Warning: ACR-CDR has already been installed. Do you wish to re-install? (y/n)' % self.name)
+#        if ans == 'n':
+#            menu_actions['main_menu']()
+#            return
     print "Installing ACR-CDR \n"
     acrcdr.pull()
     acrcdr.install()
-    acrcdr.configure() 
-    install2 = True
+    acrcdr.configure()
+    print "ACR-CDR installation complete. Returning to main menu..."
+    sleep(2)
     menu_actions['main_menu']()
     return
  
 # Back to main menu
-def mgmt():
-    if install3 = True:
-         ans = raw_input('Warning: Management portal has already been installed. Do you wish to re-install? (y/n)' % self.name)
-         if ans == 'n':
-             menu_actions['main_menu']()
-             return
+def mgmtinstall():
+    mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git','server-db.js')
+#    if install3 == True:
+#         ans = raw_input('Warning: Management portal has already been installed. Do you wish to re-install? (y/n)' % self.name)
+#         if ans == 'n':
+#             menu_actions['main_menu']()
+#             return
     mgmt.pull()
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
     mgmt.configure()
-    install3 = True
+    sleep(2)
+    print "Management portal installation complete. Returning to main menu..."
     menu_actions['main_menu']()
  
 # Exit program
@@ -148,17 +151,23 @@ def finish():
     print 'Starting servers of the installed components...'
     subprocess.call(['pm2','start','process.json'])
     sys.exit()
- 
+    
+#prevent from re-running the same install
+#install1 = False
+#install2 = False
+#install3 = False 
+
+    
 # =======================
 #    MENUS DEFINITIONS
 # =======================
- 
+
 # Menu definition
 menu_actions = {
     'main_menu': main_menu,
-    '1': acedirect,
-    '2': acrcdr,
-    '3': mgmt,
+    '1': acedirectinstall(),
+    '2': acrcdrinstall(),
+    '3': mgmtinstall(),
     '0': finish,
 }
  
@@ -181,9 +190,6 @@ if __name__ == "__main__":
     hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git','hconfig.js')
     hashconfig.pull()
     hashconfig.install()
-    #prevent from re-running the same install
-    install1 = False
-    install2 = False
-    install3 = False
+
     # Launch main menu
     main_menu()
