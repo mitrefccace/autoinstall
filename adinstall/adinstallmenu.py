@@ -11,6 +11,7 @@ import subprocess
 import os.path
 from time import sleep
 import platform
+import json
 
 class Repository:
 
@@ -193,7 +194,7 @@ if __name__ == "__main__":
     #stop all processes
     subprocess.call(['pm2','kill'])
     #set up hashconfig
-    print 'Installing HashConfig tool for configuration process..."
+    print 'Installing HashConfig tool for configuration process...'
     hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git','hconfig.js')
     hashconfig.pull()
     hashconfig.install()
