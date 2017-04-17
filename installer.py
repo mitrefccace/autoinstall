@@ -30,6 +30,7 @@ class Repository:
             subprocess.call('git pull', shell=True, cwd=self.name)
         else:
             subprocess.call('git clone %s' % self.giturl, shell=True)
+        subprocess.call('git checkout v1.1', shell=True, cwd=self.name)
 
     #install method -- run npm install
     def install(self):
@@ -42,19 +43,11 @@ class Repository:
             ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
             if ans == 'y':
                 print 'Please follow prompts to generate the configuration file...'
-                if configfile == 'config.json_TEMPLATE':
-                    subprocess.call(['rm', 'config.json_TEMPLATE'], cwd = hashconfig.name)
-                    subprocess.call(['cp', self.name + '/config.json_TEMPLATE', 'hashconfig/config.json_TEMPLATE'])
-                    subprocess.call(['node','hconfig.js'], cwd= hashconfig.name)
-                    subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
-                    subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
-                else:
-                    filename = os.path.splitext(configfile)[0]
-                    subprocess.call(['rm', 'config.json_TEMPLATE'], cwd = hashconfig.name)
-                    subprocess.call(['cp', self.name + '/' + configfile, 'hashconfig/config.json_TEMPLATE'])
-                    subprocess.call(['node','hconfig.js'],cwd=hashconfig.name)
-                    subprocess.call(['cp', 'hashconfig/config_new.json', self.name+'/'+filename+'.json'])
-                conf = False
+                subprocess.call(['rm', 'config.json_TEMPLATE'], cwd = hashconfig.name)
+                subprocess.call(['cp', self.name + '/config.json_TEMPLATE', 'hashconfig/config.json_TEMPLATE'])
+                subprocess.call(['node','hconfig.js', '-n', configfile], cwd= hashconfig.name)
+                subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
+                subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
             elif ans == 'n':
                 print 'Skipping configuration editing process...'
                 conf = False
@@ -78,9 +71,9 @@ def main_menu():
     print "1. Install ACE Direct"
     print "2. Install ACR-CDR"
     print "3. Install Management Portal"
-    print "4. Install Fendesk"
-    print "5. Install Aserver"
-    print "6. Install Userver"
+    print "4. Install Aserver"
+    print "5. Install Userver"
+    #print "6. Install Fendesk"
     print "\n0. Finish installation process"
     choice = raw_input(" >>  ")
     exec_menu(choice)
@@ -104,10 +97,8 @@ def acedirectinstall():
     acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git','adserver.js')
     print "Installing ACE Direct \n"
     acedirect.pull()
-    subprocess.call(['npm', 'install', '-g', 'bower'])
-    subprocess.call(['npm','install','pm2','-g'])
-    subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
     acedirect.install()
+    subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
     acedirect.configure()
     process['apps'].append({  
         'name': 'acedirect',
@@ -156,33 +147,12 @@ def mgmtinstall():
     sleep(2)
     menu_actions['main_menu']()
     return
-    
-# Menu 4
-def fendeskinstall():
-    #note: currently using codev for fendesk, will switch to github when released
-    fendesk = Repository('fendesk','ssh://git@git.codev.mitre.org/acrdemo/fendesk.git','app.js')
-    fendesk.pull()
-    fendesk.install()
-    subprocess.call(['npm','install','apidoc','-g'], cwd = fendesk.name)
-    subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
-    fendesk.configure()
-    process['apps'].append({  
-        'name': 'fendesk',
-        'script': './fendesk/app.js',
-        'cwd': './fendesk'
-    })
-    print "Fendesk installation complete. Returning to main menu..."
-    sys.stdout.flush()
-    sleep(2)
-    menu_actions['main_menu']()
-    return
 
-# Menu 5
+# Menu 4
 def aserverinstall():
     aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git','app.js')
     aserver.pull()
     aserver.install()
-    subprocess.call(['npm','install','apidoc','-g'], cwd = aserver.name)
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
     aserver.configure()
     process['apps'].append({  
@@ -196,12 +166,11 @@ def aserverinstall():
     menu_actions['main_menu']()
     return
     
-# Menu 6
+# Menu 5
 def userverinstall():
     userver = Repository('userver','https://github.com/mitrefccace/userver.git','app.js')
     userver.pull()
     userver.install()
-    subprocess.call(['npm','install','apidoc','-g'], cwd = userver.name)
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
     userver.configure()
     process['apps'].append({  
@@ -214,13 +183,33 @@ def userverinstall():
     sleep(2)
     menu_actions['main_menu']()
     return
+    
+    # Menu 6 - Fendesk currently not part of github
+#def fendeskinstall():
+#    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git','app.js')
+#    fendesk.pull()
+#    fendesk.install()
+#    subprocess.call(['npm','install','apidoc','-g'], cwd = fendesk.name)
+#    subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
+#    fendesk.configure()
+#    process['apps'].append({  
+#        'name': 'fendesk',
+#        'script': './fendesk/app.js',
+#        'cwd': './fendesk'
+#    })
+#    print "Fendesk installation complete. Returning to main menu..."
+#    sys.stdout.flush()
+#    sleep(2)
+#    menu_actions['main_menu']()
+#    return
  
 # Exit program
 def finish():
     print 'Writing process.json and starting servers of the installed components...'
     with open('process.json', 'w') as outfile:  
         json.dump(process, outfile)
-    subprocess.call(['pm2','start','process.json'])
+    #comment out pm2 start for now - thrashing issue
+    #subprocess.call(['pm2','start','process.json'])
     sys.exit()
 
     
@@ -234,9 +223,9 @@ menu_actions = {
     '1': acedirectinstall,
     '2': acrcdrinstall,
     '3': mgmtinstall,
-    '4': fendeskinstall
-    '5': aserverinstall
-    '6': userverinstall
+    '4': aserverinstall,
+    '5': userverinstall,
+    #'6': fendeskinstall,
     '0': finish,
 }
  
@@ -255,6 +244,10 @@ if __name__ == "__main__":
     if dist != 'centos' and dist != 'redhat':
         print 'Installation script can only be run on CentOS or RedHat. Terminating...'
         quit()
+    print 'MySQL must be installed prior to installing several of the available modules in this script. \
+    In order to check for installation on this machine, run the command "rpm -qa |grep mysql".'
+    sys.stdout.flush()
+    sleep(5)
     #stop all processes
     subprocess.call(['pm2','kill'])
     #set up hashconfig
@@ -262,8 +255,13 @@ if __name__ == "__main__":
     hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git','hconfig.js')
     hashconfig.pull()
     hashconfig.install()
-    print 'HashConfig installation complete.'
+    print 'HashConfig installation complete. Installing pm2, bower, and apidoc...'
     sys.stdout.flush()
-    sleep(2)
+    sleep(1)
+    subprocess.call(['npm', 'install', '-g', 'bower'])
+    subprocess.call(['npm','install','pm2','-g'])
+    subprocess.call(['npm','install','apidoc','-g'])
+    sys.stdout.flush()
+    sleep(1)
     # Launch main menu
     main_menu()
