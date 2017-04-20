@@ -73,6 +73,7 @@ def main_menu():
     print "3. Install Management Portal"
     print "4. Install Aserver"
     print "5. Install Userver"
+    print "6. Quick install (all servers)"
     #print "6. Install Fendesk"
     print "\n0. Finish installation process"
     choice = raw_input(" >>  ")
@@ -183,6 +184,16 @@ def userverinstall():
     sleep(2)
     menu_actions['main_menu']()
     return
+
+# Menu 6
+def quickinstall():
+    acedirectinstall()
+    acrcdrinstall()
+    mgmtinstall()
+    aserverinstall()
+    userverinstall()
+    finish()
+    return
     
     # Menu 6 - Fendesk currently not part of github
 #def fendeskinstall():
@@ -225,6 +236,7 @@ menu_actions = {
     '3': mgmtinstall,
     '4': aserverinstall,
     '5': userverinstall,
+    '6': quickinsstall,
     #'6': fendeskinstall,
     '0': finish,
 }
