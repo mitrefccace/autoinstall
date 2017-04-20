@@ -17,6 +17,9 @@ The auserverinstall directory contains the auserverinstall.py installation scrip
 userver repositories. It also contains a process.json file that specifies the servers corresponding 
 to each repository, to be started after installation and configuration.
 
+The repository also contains installer.py, which is a menu-based script that allows the user to install
+any of the repositories in any order.
+
 ## Prerequisites
 The installation scripts require the following:
 
@@ -25,6 +28,8 @@ The installation scripts require the following:
 * Node.js is installed on the user machine.
 
 * Python 2.7 is installed on the user machine.
+
+* MySQL is installed on the user machine, and the user has access to the username and password.
 
 * The Asterisk installation script also requires that the public/private key pair 
 for Git must be added to /root/.ssh and their permissions must be 600. For more 

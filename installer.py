@@ -236,7 +236,7 @@ menu_actions = {
     '3': mgmtinstall,
     '4': aserverinstall,
     '5': userverinstall,
-    '6': quickinsstall,
+    '6': quickinstall,
     #'6': fendeskinstall,
     '0': finish,
 }
