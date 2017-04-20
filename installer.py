@@ -37,17 +37,20 @@ class Repository:
         subprocess.call(['npm','install'], cwd=self.name)
 
     #configure method -- use HashConfig
-    def configure(self, configfile = 'config.json_TEMPLATE'):
+    def configure(self):
+        template = raw_input('Please enter the full path to the configuration template file, or press enter to use the default file.')
+        if template == '':
+            template = 'config.json_TEMPLATE'
         ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
         if ans == 'y':
             print 'Please follow prompts to generate the configuration file...'
             subprocess.call(['rm', 'config.json_TEMPLATE'], cwd = hashconfig.name)
             subprocess.call(['cp', self.name + '/config.json_TEMPLATE', 'hashconfig/config.json_TEMPLATE'])
-            subprocess.call(['node','hconfig.js', '-n', configfile], cwd= hashconfig.name)
+            subprocess.call(['node','hconfig.js', '-n', template], cwd= hashconfig.name)
             subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
             subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
         elif ans == 'n':
-            print 'Skipping configuration editing process...'
+            subprocess.call(['node','hconfig.js', '-fn', template])
         else:
             print 'Invalid input. Must enter "y" or "n".'
 
