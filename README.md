@@ -38,27 +38,35 @@ information on generating and adding the keys, refer to [this link]
 
 
 ## Instructions for Use
-1. Open the parent directory where the autoinstall repository will be placed.
+1. Open the parent directory where the autoinstall repository will be placed; the home directory is suggested.
 
 2. Clone this repository and open the autoinstall folder by running 
 ```sh 
 cd autoinstall
 ```
  in the command prompt.  
+ 
+3. Copy installer.py from the autoinstall directory to the home directory, and enter the home directory.
 
-3. To run the adinstall.py script, open the adinstall directory and then run the script using the 
+4. Run ```sh
+python ./installer.py
+```
+Follow the instructions; select any subset of the repositories to install. To install all repositories,
+select the quick install option.
+
+4. To run the adinstall.py script, open the adinstall directory and then run the script using the 
 command 
 ```sh
 python ./adinstall.py
 ```
 
-4. To run the auserverinstall.py script, open the auserverinstall directory and then run the script 
+5. To run the auserverinstall.py script, open the auserverinstall directory and then run the script 
 using the command 
 ```sh
 python ./auserverinstall.py
 ```
 
-5. To run the asteriskinstall.py script, open the shell as sudo with the command
+6. To run the asteriskinstall.py script, open the shell as sudo with the command
 ```sh
 sudo -i
 ```

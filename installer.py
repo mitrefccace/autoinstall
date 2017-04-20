@@ -38,7 +38,7 @@ class Repository:
 
     #configure method -- use HashConfig
     def configure(self):
-        template = raw_input('Please enter the full path to the configuration template file, or press enter to use the default file.')
+        template = raw_input('Please enter the full path to the configuration template file for ' + self.name +', or press enter to use the default file: ')
         if template == '':
             template = 'config.json_TEMPLATE'
         ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
@@ -257,7 +257,7 @@ if __name__ == "__main__":
         print 'Installation script can only be run on CentOS or RedHat. Terminating...'
         quit()
     print 'MySQL must be installed prior to installing several of the available modules in this script. \
-    In order to check for installation on this machine, run the command "rpm -qa |grep mysql".'
+In order to check for installation on this machine, run the command "rpm -qa |grep mysql".'
     sys.stdout.flush()
     sleep(5)
     #stop all processes
