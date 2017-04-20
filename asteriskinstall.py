@@ -8,7 +8,7 @@ sleep(1.5)
 
 ans = raw_input('Do you want to update packages using "yum -y update"? (y/n)')
 if ans == 'y':
-    subprocess.call('yum -y update', shell=True)
+    subprocess.call('yum -y update --exclude=kernel*', shell=True)
 elif ans == 'n':
     print 'Skipping update...'
 else:
