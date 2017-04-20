@@ -55,19 +55,19 @@ python ./installer.py
 Follow the instructions; select any subset of the repositories to install. To install all repositories,
 select the quick install option.
 
-4. To run the adinstall.py script, open the adinstall directory and then run the script using the 
+5. To run the adinstall.py script, open the adinstall directory and then run the script using the 
 command 
 ```sh
 python ./adinstall.py
 ```
 
-5. To run the auserverinstall.py script, open the auserverinstall directory and then run the script 
+6. To run the auserverinstall.py script, open the auserverinstall directory and then run the script 
 using the command 
 ```sh
 python ./auserverinstall.py
 ```
 
-6. To run the asteriskinstall.py script, open the shell as sudo with the command
+7. To run the asteriskinstall.py script, open the shell as sudo with the command
 ```sh
 sudo -i
 ```
