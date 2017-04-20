@@ -48,7 +48,8 @@ cd autoinstall
  
 3. Copy installer.py from the autoinstall directory to the home directory, and enter the home directory.
 
-4. Run ```sh
+4. Run 
+```sh
 python ./installer.py
 ```
 Follow the instructions; select any subset of the repositories to install. To install all repositories,
