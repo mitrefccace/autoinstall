@@ -141,6 +141,7 @@ def acrcdrinstall():
 # Menu 3
 def mgmtinstall():
     mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git','server-db.js')
+    print "Installing Management Portal \n"
     mgmt.pull()
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
@@ -162,6 +163,7 @@ def mgmtinstall():
 # Menu 4
 def aserverinstall():
     aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git','app.js')
+    print "Installing Aserver \n"
     aserver.pull()
     aserver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
@@ -183,6 +185,7 @@ def aserverinstall():
 # Menu 5
 def userverinstall():
     userver = Repository('userver','https://github.com/mitrefccace/userver.git','app.js')
+    print "Installing Userver \n"
     userver.pull()
     userver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
@@ -205,6 +208,7 @@ def userverinstall():
 #     Menu 6 - Fendesk currently not part of github
 def fendeskinstall():
     fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git','app.js')
+    print "Installing Fendesk \n"
     fendesk.pull()
     fendesk.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
@@ -224,12 +228,101 @@ def fendeskinstall():
  
 # Menu 7
 def quickinstall():
-    acedirectinstall()
-    acrcdrinstall()
-    mgmtinstall()
-    aserverinstall()
-    userverinstall()
-    fendeskinstall()
+    #gather all repos
+    acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git','adserver.js')
+    acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git','app.js')
+    mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git','server-db.js')
+    aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git','app.js')
+    userver = Repository('userver','https://github.com/mitrefccace/userver.git','app.js')
+    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git','app.js')
+    #installation process for ACE Direct
+    print "Installing ACE Direct \n"
+    acedirect.pull()
+    acedirect.install()
+    subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
+    acedirect.configure()
+    process['apps'].append({  
+        'name': 'ACE Direct',
+        'script': './acedirect/adserver.js',
+        'cwd': './acedirect',
+        'out_file': './logs/pm2-adserver.log',
+        'error_file': './logs/pm2-adserver-error.log'
+
+    })
+    print "ACE Direct installation complete."
+    #installation process for ACR-CDR
+    print "Installing ACR-CDR \n"
+    acrcdr.pull()
+    acrcdr.install()
+    acrcdr.configure()
+    process['apps'].append({  
+        'name': 'CDR',
+        'script': './acr-cdr/app.js',
+        'cwd': './acr-cdr',
+        'out_file': './logs/pm2-app.log',
+        'error_file': './logs/pm2-app-error.log'
+
+    })
+    print "ACR-CDR installation complete."
+    #installation process for Management Portal
+    print "Installing Management Portal \n"
+    mgmt.pull()
+    mgmt.install()
+    subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
+    mgmt.configure()
+    process['apps'].append({  
+        'name': 'Management Dashboard',
+        'script': './managementportal/server-db.js',
+        'cwd': './managementportal',
+        'out_file': './logs/pm2-server-db.log',
+        'error_file': './logs/pm2-server-db-error.log'
+
+    })
+    print "Management portal installation complete."
+    #installation process for Aserver
+    print "Installing Aserver \n"
+    aserver.pull()
+    aserver.install()
+    subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
+    aserver.configure()
+    process['apps'].append({  
+        'name': 'Aserver',
+        'script': './aserver/app.js',
+        'cwd': './aserver',
+        'out_file': './logs/pm2-aserver.log',
+        'error_file': './logs/pm2-aserver-error.log'
+
+    })
+    print "Aserver installation complete."
+    #installation process for Userver
+    print "Installing Userver \n"
+    userver.pull()
+    userver.install()
+    subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
+    userver.configure()
+    process['apps'].append({  
+        'name': 'Userver',
+        'script': './userver/app.js',
+        'cwd': './userver',
+        'out_file': './logs/pm2-userver.log',
+        'error_file': './logs/pm2-userver-error.log'
+
+    })
+    print "Userver installation complete."
+    #installation process for Fendesk
+    print "Installing Fendesk \n"
+    fendesk.pull()
+    fendesk.install()
+    subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
+    fendesk.configure()
+    process['apps'].append({  
+        'name': 'Fendesk',
+        'script': './fendesk/app.js',
+        'cwd': './fendesk',
+        'out_file': './logs/pm2-fendesk.log',
+        'error_file': './logs/pm2-fendesk-error.log'
+    })
+    print "Fendesk installation complete."
     finish()
     return
         
