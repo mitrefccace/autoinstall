@@ -9,16 +9,10 @@ process. The following diagram visually describes the installation script.
 </p>
 
 ## Code Structure
-The adinstall directory contains the adinstall.py installation script for the acedirect, acr-cdr, 
-and managementportal repositories. It also contains a process.json file that specifies the servers 
-corresponding to each repository, to be started after installation and configuration.
+The script installer.py allows the user to install any of the following repositories in any order:
+ACE Direct, ACR-CDR, Management Portal, Aserver, Userver, and Fendesk.
 
-The auserverinstall directory contains the auserverinstall.py installation script for the aserver and 
-userver repositories. It also contains a process.json file that specifies the servers corresponding 
-to each repository, to be started after installation and configuration.
-
-The repository also contains installer.py, which is a menu-based script that allows the user to install
-any of the repositories in any order.
+The script asteriskinstall.py installs Asterisk.
 
 ## Prerequisites
 The installation scripts require the following:
@@ -37,14 +31,10 @@ information on generating and adding the keys, refer to [this link]
 (https://help.github.com/articles/connecting-to-github-with-ssh/)
 
 
-## Instructions for Use
+## Instructions for Use: installer.py
 1. Open the parent directory where the autoinstall repository will be placed; the home directory is suggested.
 
-2. Clone this repository and open the autoinstall folder by running 
-```sh 
-cd autoinstall
-```
- in the command prompt.  
+2. Clone this repository. 
  
 3. Copy installer.py from the autoinstall directory to the home directory, and enter the home directory.
 
@@ -55,24 +45,13 @@ python ./installer.py
 Follow the instructions; select any subset of the repositories to install. To install all repositories,
 select the quick install option.
 
-5. To run the adinstall.py script, open the adinstall directory and then run the script using the 
-command 
-```sh
-python ./adinstall.py
-```
-
-6. To run the auserverinstall.py script, open the auserverinstall directory and then run the script 
-using the command 
-```sh
-python ./auserverinstall.py
-```
-
-7. To run the asteriskinstall.py script, open the shell as sudo with the command
+##Instructions for Use: asteriskinstall.py
+1. To run the asteriskinstall.py script, open the shell as sudo with the command
 ```sh
 sudo -i
 ```
-.
-After configuring the proxy, run the script using the command
+
+2. After configuring the proxy, run the script using the command
 
 ```sh
 python ./asteriskinstall.py \<public_ip> \<local_ip> \<dial_in> \<stun_server> \<crt_file> \<crt_key> \<ss_crt> \<ss_ca_crt>
