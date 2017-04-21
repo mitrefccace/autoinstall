@@ -44,8 +44,6 @@ class Repository:
         ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
         if ans == 'y':
             print 'Please follow prompts to generate the configuration file...'
-            subprocess.call(['rm', 'config.json_TEMPLATE'], cwd = hashconfig.name)
-            subprocess.call(['cp', self.name + '/config.json_TEMPLATE', 'hashconfig/config.json_TEMPLATE'])
             subprocess.call(['node','hconfig.js', '-n', template], cwd= hashconfig.name)
             subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
             subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
@@ -73,8 +71,8 @@ def main_menu():
     print "3. Install Management Portal"
     print "4. Install Aserver"
     print "5. Install Userver"
-    print "6. Quick install (all servers)"
-    #print "6. Install Fendesk"
+    print "6. Install Fendesk"
+    print "7. Quick install (all servers)"
     print "\n0. Finish installation process"
     choice = raw_input(" >>  ")
     exec_menu(choice)
@@ -102,9 +100,12 @@ def acedirectinstall():
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
     acedirect.configure()
     process['apps'].append({  
-        'name': 'acedirect',
+        'name': 'ACE Direct',
         'script': './acedirect/adserver.js',
-        'cwd': './acedirect'
+        'cwd': './acedirect',
+        'out_file': './logs/pm2-adserver.log',
+        'error_file': './logs/pm2-adserver-error.log'
+
     })
     print "ACE Direct installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -121,9 +122,12 @@ def acrcdrinstall():
     acrcdr.install()
     acrcdr.configure()
     process['apps'].append({  
-        'name': 'acrcdr',
+        'name': 'CDR',
         'script': './acr-cdr/app.js',
-        'cwd': './acr-cdr'
+        'cwd': './acr-cdr',
+        'out_file': './logs/pm2-app.log',
+        'error_file': './logs/pm2-app-error.log'
+
     })
     print "ACR-CDR installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -139,9 +143,12 @@ def mgmtinstall():
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
     mgmt.configure()
     process['apps'].append({  
-        'name': 'mgmt',
+        'name': 'Management Dashboard',
         'script': './managementportal/server-db.js',
-        'cwd': './managementportal'
+        'cwd': './managementportal',
+        'out_file': './logs/pm2-server-db.log',
+        'error_file': './logs/pm2-server-db-error.log'
+
     })
     print "Management portal installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -157,9 +164,12 @@ def aserverinstall():
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
     aserver.configure()
     process['apps'].append({  
-        'name': 'aserver',
+        'name': 'Aserver',
         'script': './aserver/app.js',
-        'cwd': './aserver'
+        'cwd': './aserver',
+        'out_file': './logs/pm2-aserver.log',
+        'error_file': './logs/pm2-aserver-error.log'
+
     })
     print "Aserver installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -175,9 +185,12 @@ def userverinstall():
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
     userver.configure()
     process['apps'].append({  
-        'name': 'userver',
+        'name': 'Userver',
         'script': './userver/app.js',
-        'cwd': './userver'
+        'cwd': './userver',
+        'out_file': './logs/pm2-userver.log',
+        'error_file': './logs/pm2-userver-error.log'
+
     })
     print "Userver installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -185,42 +198,46 @@ def userverinstall():
     menu_actions['main_menu']()
     return
 
-# Menu 6
+
+#     Menu 6 - Fendesk currently not part of github
+def fendeskinstall():
+    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git','app.js')
+    fendesk.pull()
+    fendesk.install()
+    subprocess.call(['npm','install','apidoc','-g'], cwd = fendesk.name)
+    subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
+    fendesk.configure()
+    process['apps'].append({  
+        'name': 'Fendesk',
+        'script': './fendesk/app.js',
+        'cwd': './fendesk',
+        'out_file': './logs/pm2-fendesk.log',
+        'error_file': './logs/pm2-fendesk-error.log'
+    })
+    print "Fendesk installation complete. Returning to main menu..."
+    sys.stdout.flush()
+    sleep(2)
+    menu_actions['main_menu']()
+    return
+ 
+# Menu 7
 def quickinstall():
     acedirectinstall()
     acrcdrinstall()
     mgmtinstall()
     aserverinstall()
     userverinstall()
+    fendeskinstall()
     finish()
     return
+        
     
-    # Menu 6 - Fendesk currently not part of github
-#def fendeskinstall():
-#    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git','app.js')
-#    fendesk.pull()
-#    fendesk.install()
-#    subprocess.call(['npm','install','apidoc','-g'], cwd = fendesk.name)
-#    subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
-#    fendesk.configure()
-#    process['apps'].append({  
-#        'name': 'fendesk',
-#        'script': './fendesk/app.js',
-#        'cwd': './fendesk'
-#    })
-#    print "Fendesk installation complete. Returning to main menu..."
-#    sys.stdout.flush()
-#    sleep(2)
-#    menu_actions['main_menu']()
-#    return
- 
 # Exit program
 def finish():
     print 'Writing process.json and starting servers of the installed components...'
     with open('process.json', 'w') as outfile:  
         json.dump(process, outfile)
-    #comment out pm2 start for now - thrashing issue
-    #subprocess.call(['pm2','start','process.json'])
+    subprocess.call(['pm2','start','process.json'])
     sys.exit()
 
     
@@ -236,8 +253,8 @@ menu_actions = {
     '3': mgmtinstall,
     '4': aserverinstall,
     '5': userverinstall,
-    '6': quickinstall,
-    #'6': fendeskinstall,
+    '6': fendeskinstall,
+    '7': quickinstall,
     '0': finish,
 }
  
