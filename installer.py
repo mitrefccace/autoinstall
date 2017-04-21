@@ -44,11 +44,11 @@ class Repository:
         ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
         if ans == 'y':
             print 'Please follow prompts to generate the configuration file...'
-            subprocess.call(['node','hconfig.js', '-n', template], cwd= hashconfig.name)
+            subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
             subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
             subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
         elif ans == 'n':
-            subprocess.call(['node','hconfig.js', '-fn', template])
+            subprocess.call(['node','hconfig.js', '-fn', template], cwd = hashconfig.name)
         else:
             print 'Invalid input. Must enter "y" or "n".'
 
@@ -204,7 +204,6 @@ def fendeskinstall():
     fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git','app.js')
     fendesk.pull()
     fendesk.install()
-    subprocess.call(['npm','install','apidoc','-g'], cwd = fendesk.name)
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
     fendesk.configure()
     process['apps'].append({  
