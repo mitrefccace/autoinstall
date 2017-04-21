@@ -49,6 +49,9 @@ class Repository:
             subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
         elif ans == 'n':
             subprocess.call(['node','hconfig.js', '-fn', template], cwd = hashconfig.name)
+            subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
+            subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
+
         else:
             print 'Invalid input. Must enter "y" or "n".'
 
