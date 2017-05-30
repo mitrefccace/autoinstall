@@ -38,22 +38,26 @@ class Repository:
 
     #configure method -- use HashConfig
     def configure(self):
-        template = raw_input('Please enter the full path to the configuration template file for ' + self.name +', or press enter to use the default file: ')
-        if template == '':
-            template = 'config.json_TEMPLATE'
-        ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
-        if ans == 'y':
-            print 'Please follow prompts to generate the configuration file...'
-            subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
+        if os.path.isfile('/home/centos/config_' + self.name + '.json_TEMPLATE'):
+            subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_' + self.name + '.json_TEMPLATE'], cwd = hashconfig.name)
             subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
             subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
-        elif ans == 'n':
-            subprocess.call(['node','hconfig.js', '-fn', template], cwd = hashconfig.name)
-            subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
-            subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
-
         else:
-            print 'Invalid input. Must enter "y" or "n".'
+            template = raw_input('Please enter the full path to the configuration template file for ' + self.name +', or press enter to use the default file: ')
+            if template == '':
+                template = 'config.json_TEMPLATE'
+            ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
+            if ans == 'y':
+                print 'Please follow prompts to generate the configuration file...'
+                subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
+                subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
+                subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
+            elif ans == 'n':
+                subprocess.call(['node','hconfig.js', '-fn', template], cwd = hashconfig.name)
+                subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
+                subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
+            else:
+                print 'Invalid input. Must enter "y" or "n".'
 
  
 # Initialize menu options and process.json
@@ -365,8 +369,8 @@ if __name__ == "__main__":
         quit()
     #check distribution    
     dist = platform.dist()[0]
-    if dist != 'centos' and dist != 'redhat':
-        print 'Installation script can only be run on CentOS or RedHat. Terminating...'
+    if dist != 'centos' and dist != 'redhat' and dist != 'fedora':
+        print 'Installation script can only be run on CentOS, RedHat, or Fedora. Terminating...'
         quit()
     print 'MySQL must be installed prior to installing several of the available modules in this script. \
 In order to check for installation on this machine, run the command "rpm -qa |grep mysql".'
