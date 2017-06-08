@@ -493,11 +493,16 @@ if __name__ == "__main__":
 In order to check for installation on this machine, run the command "rpm -qa |grep mysql".'
     sys.stdout.flush()
     sleep(1.5)
+    #create dat directory
     out = subprocess.check_output('test -e dat && echo -n True || echo -n False', shell=True)
     out_bool = out.lower() in ("false")
     if out_bool:
         print 'Creating dat directory...'
         subprocess.call('mkdir dat', shell=True)
+    #install git, wget, and node.js
+    subprocess.call(['sudo', 'yum', 'install', 'git'])
+    subprocess.call(['sudo', 'yum', 'install', 'wget'])
+    subprocess.call(['sudo', 'yum', 'install', 'nodejs'])
     #set up hashconfig
     print 'Installing HashConfig tool for configuration process...'
     hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git','hconfig.js')
