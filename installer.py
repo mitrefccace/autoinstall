@@ -30,7 +30,7 @@ class Repository:
             subprocess.call('git pull', shell=True, cwd=self.name)
         else:
             subprocess.call('git clone %s' % self.giturl, shell=True)
-        subprocess.call('git checkout v1.1', shell=True, cwd=self.name)
+        subprocess.call('git checkout v2.0', shell=True, cwd=self.name)
 
     #install method -- run npm install
     def install(self):
@@ -58,12 +58,19 @@ class Repository:
                 subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
             else:
                 print 'Invalid input. Must enter "y" or "n".'
-
  
 # Initialize menu options and process.json
 menu_actions  = {} 
-process = {}
-process['apps'] = []
+out = subprocess.check_output('test -e process.json && echo -n True || echo -n False', shell=True)
+out_bool = out.lower() in ("true")
+if out_bool:
+    with open('process.json') as data_file:    
+        process = json.load(data_file)
+    if 'apps' not in process:
+        print 'Warning: existing process.json file improperly formatted.'
+else:
+    process = {}
+    process['apps'] = []
  
  
 # =======================
@@ -106,14 +113,23 @@ def acedirectinstall():
     acedirect.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
     acedirect.configure()
-    process['apps'].append({  
-        'name': 'ACE Direct',
-        'script': './acedirect/adserver.js',
-        'cwd': './acedirect',
-        'out_file': './logs/pm2-adserver.log',
-        'error_file': './logs/pm2-adserver-error.log'
-
-    })
+    #update process.json: replace existing ACE Direct entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'ACE Direct':
+            process['apps'][i]['script'] = './acedirect/adserver.js'
+            process['apps'][i]['cwd'] = './acedirect'
+            process['apps'][i]['out_file'] = './logs/pm2-adserver.log'
+            process['apps'][i]['error_file'] = './logs/pm2-adserver-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'ACE Direct',
+            'script': './acedirect/adserver.js',
+            'cwd': './acedirect',
+            'out_file': './logs/pm2-adserver.log',
+            'error_file': './logs/pm2-adserver-error.log'
+        })
     print "ACE Direct installation complete. Returning to main menu..."
     sys.stdout.flush()
     sleep(2)
@@ -128,14 +144,23 @@ def acrcdrinstall():
     acrcdr.pull()
     acrcdr.install()
     acrcdr.configure()
-    process['apps'].append({  
-        'name': 'CDR',
-        'script': './acr-cdr/app.js',
-        'cwd': './acr-cdr',
-        'out_file': './logs/pm2-app.log',
-        'error_file': './logs/pm2-app-error.log'
-
-    })
+    #update process.json: replace existing CDR entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'CDR':
+            process['apps'][i]['script'] = './acr-cdr/app.js'
+            process['apps'][i]['cwd'] = './acr-cdr'
+            process['apps'][i]['out_file'] = './logs/pm2-app.log'
+            process['apps'][i]['error_file'] = './logs/pm2-app-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'CDR',
+            'script': './acr-cdr/app.js',
+            'cwd': './acr-cdr',
+            'out_file': './logs/pm2-app.log',
+            'error_file': './logs/pm2-app-error.log'
+        })
     print "ACR-CDR installation complete. Returning to main menu..."
     sys.stdout.flush()
     sleep(2)
@@ -150,14 +175,23 @@ def mgmtinstall():
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
     mgmt.configure()
-    process['apps'].append({  
-        'name': 'Management Dashboard',
-        'script': './managementportal/server-db.js',
-        'cwd': './managementportal',
-        'out_file': './logs/pm2-server-db.log',
-        'error_file': './logs/pm2-server-db-error.log'
-
-    })
+    #update process.json: replace existing Management entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'Management Dashboard':
+            process['apps'][i]['script'] = './managementportal/server-db.js'
+            process['apps'][i]['cwd'] = './managementportal'
+            process['apps'][i]['out_file'] = './logs/pm2-server-db.log'
+            process['apps'][i]['error_file'] = './logs/pm2-server-db-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Management Dashboard',
+            'script': './managementportal/server-db.js',
+            'cwd': './managementportal',
+            'out_file': './logs/pm2-server-db.log',
+            'error_file': './logs/pm2-server-db-error.log'
+        })
     print "Management portal installation complete. Returning to main menu..."
     sys.stdout.flush()
     sleep(2)
@@ -172,14 +206,23 @@ def aserverinstall():
     aserver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
     aserver.configure()
-    process['apps'].append({  
-        'name': 'Aserver',
-        'script': './aserver/app.js',
-        'cwd': './aserver',
-        'out_file': './logs/pm2-aserver.log',
-        'error_file': './logs/pm2-aserver-error.log'
-
-    })
+    #update process.json: replace existing Aserver entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'Aserver':
+            process['apps'][i]['script'] = './aserver/app.js'
+            process['apps'][i]['cwd'] = './aserver'
+            process['apps'][i]['out_file'] = './logs/pm2-aserver.log'
+            process['apps'][i]['error_file'] = './logs/pm2-aserver-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Aserver',
+            'script': './aserver/app.js',
+            'cwd': './aserver',
+            'out_file': './logs/pm2-aserver.log',
+            'error_file': './logs/pm2-aserver-error.log'
+        })
     print "Aserver installation complete. Returning to main menu..."
     sys.stdout.flush()
     sleep(2)
@@ -194,14 +237,23 @@ def userverinstall():
     userver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
     userver.configure()
-    process['apps'].append({  
-        'name': 'Userver',
-        'script': './userver/app.js',
-        'cwd': './userver',
-        'out_file': './logs/pm2-userver.log',
-        'error_file': './logs/pm2-userver-error.log'
-
-    })
+    #update process.json: replace existing Userver entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'Userver':
+            process['apps'][i]['script'] = './userver/app.js'
+            process['apps'][i]['cwd'] = './userver'
+            process['apps'][i]['out_file'] = './logs/pm2-userver.log'
+            process['apps'][i]['error_file'] = './logs/pm2-userver-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Userver',
+            'script': './userver/app.js',
+            'cwd': './userver',
+            'out_file': './logs/pm2-userver.log',
+            'error_file': './logs/pm2-userver-error.log'
+        })
     print "Userver installation complete. Returning to main menu..."
     sys.stdout.flush()
     sleep(2)
@@ -217,13 +269,23 @@ def fendeskinstall():
     fendesk.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
     fendesk.configure()
-    process['apps'].append({  
-        'name': 'Fendesk',
-        'script': './fendesk/app.js',
-        'cwd': './fendesk',
-        'out_file': './logs/pm2-fendesk.log',
-        'error_file': './logs/pm2-fendesk-error.log'
-    })
+    #update process.json: replace existing Fendesk entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'Fendesk':
+            process['apps'][i]['script'] = './fendesk/app.js'
+            process['apps'][i]['cwd'] = './fendesk'
+            process['apps'][i]['out_file'] = './logs/pm2-fendesk.log'
+            process['apps'][i]['error_file'] = './logs/pm2-fendesk-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Fendesk',
+            'script': './fendesk/app.js',
+            'cwd': './fendesk',
+            'out_file': './logs/pm2-fendesk.log',
+            'error_file': './logs/pm2-fendesk-error.log'
+        })
     print "Fendesk installation complete. Returning to main menu..."
     sys.stdout.flush()
     sleep(2)
@@ -245,28 +307,46 @@ def quickinstall():
     acedirect.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
     acedirect.configure()
-    process['apps'].append({  
-        'name': 'ACE Direct',
-        'script': './acedirect/adserver.js',
-        'cwd': './acedirect',
-        'out_file': './logs/pm2-adserver.log',
-        'error_file': './logs/pm2-adserver-error.log'
-
-    })
+    #update process.json: replace existing ACE Direct entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'ACE Direct':
+            process['apps'][i]['script'] = './acedirect/adserver.js'
+            process['apps'][i]['cwd'] = './acedirect'
+            process['apps'][i]['out_file'] = './logs/pm2-adserver.log'
+            process['apps'][i]['error_file'] = './logs/pm2-adserver-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'ACE Direct',
+            'script': './acedirect/adserver.js',
+            'cwd': './acedirect',
+            'out_file': './logs/pm2-adserver.log',
+            'error_file': './logs/pm2-adserver-error.log'
+        })
     print "ACE Direct installation complete."
     #installation process for ACR-CDR
     print "Installing ACR-CDR \n"
     acrcdr.pull()
     acrcdr.install()
     acrcdr.configure()
-    process['apps'].append({  
-        'name': 'CDR',
-        'script': './acr-cdr/app.js',
-        'cwd': './acr-cdr',
-        'out_file': './logs/pm2-app.log',
-        'error_file': './logs/pm2-app-error.log'
-
-    })
+    #update process.json: replace existing CDR entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'CDR':
+            process['apps'][i]['script'] = './acr-cdr/app.js'
+            process['apps'][i]['cwd'] = './acr-cdr'
+            process['apps'][i]['out_file'] = './logs/pm2-app.log'
+            process['apps'][i]['error_file'] = './logs/pm2-app-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'CDR',
+            'script': './acr-cdr/app.js',
+            'cwd': './acr-cdr',
+            'out_file': './logs/pm2-app.log',
+            'error_file': './logs/pm2-app-error.log'
+        })
     print "ACR-CDR installation complete."
     #installation process for Management Portal
     print "Installing Management Portal \n"
@@ -274,14 +354,23 @@ def quickinstall():
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
     mgmt.configure()
-    process['apps'].append({  
-        'name': 'Management Dashboard',
-        'script': './managementportal/server-db.js',
-        'cwd': './managementportal',
-        'out_file': './logs/pm2-server-db.log',
-        'error_file': './logs/pm2-server-db-error.log'
-
-    })
+    #update process.json: replace existing Management entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'Management Dashboard':
+            process['apps'][i]['script'] = './managementportal/server-db.js'
+            process['apps'][i]['cwd'] = './managementportal'
+            process['apps'][i]['out_file'] = './logs/pm2-server-db.log'
+            process['apps'][i]['error_file'] = './logs/pm2-server-db-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Management Dashboard',
+            'script': './managementportal/server-db.js',
+            'cwd': './managementportal',
+            'out_file': './logs/pm2-server-db.log',
+            'error_file': './logs/pm2-server-db-error.log'
+        })
     print "Management portal installation complete."
     #installation process for Aserver
     print "Installing Aserver \n"
@@ -289,14 +378,23 @@ def quickinstall():
     aserver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
     aserver.configure()
-    process['apps'].append({  
-        'name': 'Aserver',
-        'script': './aserver/app.js',
-        'cwd': './aserver',
-        'out_file': './logs/pm2-aserver.log',
-        'error_file': './logs/pm2-aserver-error.log'
-
-    })
+    #update process.json: replace existing Aserver entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'Aserver':
+            process['apps'][i]['script'] = './aserver/app.js'
+            process['apps'][i]['cwd'] = './aserver'
+            process['apps'][i]['out_file'] = './logs/pm2-aserver.log'
+            process['apps'][i]['error_file'] = './logs/pm2-aserver-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Aserver',
+            'script': './aserver/app.js',
+            'cwd': './aserver',
+            'out_file': './logs/pm2-aserver.log',
+            'error_file': './logs/pm2-aserver-error.log'
+        })
     print "Aserver installation complete."
     #installation process for Userver
     print "Installing Userver \n"
@@ -304,14 +402,23 @@ def quickinstall():
     userver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
     userver.configure()
-    process['apps'].append({  
-        'name': 'Userver',
-        'script': './userver/app.js',
-        'cwd': './userver',
-        'out_file': './logs/pm2-userver.log',
-        'error_file': './logs/pm2-userver-error.log'
-
-    })
+    #update process.json: replace existing Userver entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'Userver':
+            process['apps'][i]['script'] = './userver/app.js'
+            process['apps'][i]['cwd'] = './userver'
+            process['apps'][i]['out_file'] = './logs/pm2-userver.log'
+            process['apps'][i]['error_file'] = './logs/pm2-userver-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Userver',
+            'script': './userver/app.js',
+            'cwd': './userver',
+            'out_file': './logs/pm2-userver.log',
+            'error_file': './logs/pm2-userver-error.log'
+        })
     print "Userver installation complete."
     #installation process for Fendesk
     print "Installing Fendesk \n"
@@ -319,13 +426,23 @@ def quickinstall():
     fendesk.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
     fendesk.configure()
-    process['apps'].append({  
-        'name': 'Fendesk',
-        'script': './fendesk/app.js',
-        'cwd': './fendesk',
-        'out_file': './logs/pm2-fendesk.log',
-        'error_file': './logs/pm2-fendesk-error.log'
-    })
+    #update process.json: replace existing Fendesk entry or create new entry
+    updated = False
+    for i in len(process['apps']):
+        if process['apps'][i]['name'] == 'Fendesk':
+            process['apps'][i]['script'] = './fendesk/app.js'
+            process['apps'][i]['cwd'] = './fendesk'
+            process['apps'][i]['out_file'] = './logs/pm2-fendesk.log'
+            process['apps'][i]['error_file'] = './logs/pm2-fendesk-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Fendesk',
+            'script': './fendesk/app.js',
+            'cwd': './fendesk',
+            'out_file': './logs/pm2-fendesk.log',
+            'error_file': './logs/pm2-fendesk-error.log'
+        })
     print "Fendesk installation complete."
     finish()
     return
@@ -375,9 +492,12 @@ if __name__ == "__main__":
     print 'MySQL must be installed prior to installing several of the available modules in this script. \
 In order to check for installation on this machine, run the command "rpm -qa |grep mysql".'
     sys.stdout.flush()
-    sleep(5)
-    #stop all processes
-    subprocess.call(['pm2','kill'])
+    sleep(1.5)
+    out = subprocess.check_output('test -e dat && echo -n True || echo -n False', shell=True)
+    out_bool = out.lower() in ("false")
+    if out_bool:
+        print 'Creating dat directory...'
+        subprocess.call('mkdir dat', shell=True)
     #set up hashconfig
     print 'Installing HashConfig tool for configuration process...'
     hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git','hconfig.js')
@@ -391,5 +511,7 @@ In order to check for installation on this machine, run the command "rpm -qa |gr
     subprocess.call(['npm','install','apidoc','-g'])
     sys.stdout.flush()
     sleep(1)
+    #stop all processes
+    subprocess.call(['pm2','kill'])
     # Launch main menu
     main_menu()
