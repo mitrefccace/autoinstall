@@ -115,7 +115,7 @@ def acedirectinstall():
     acedirect.configure()
     #update process.json: replace existing ACE Direct entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'ACE Direct':
             process['apps'][i]['script'] = './acedirect/adserver.js'
             process['apps'][i]['cwd'] = './acedirect'
@@ -146,7 +146,7 @@ def acrcdrinstall():
     acrcdr.configure()
     #update process.json: replace existing CDR entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'CDR':
             process['apps'][i]['script'] = './acr-cdr/app.js'
             process['apps'][i]['cwd'] = './acr-cdr'
@@ -177,7 +177,7 @@ def mgmtinstall():
     mgmt.configure()
     #update process.json: replace existing Management entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Management Dashboard':
             process['apps'][i]['script'] = './managementportal/server-db.js'
             process['apps'][i]['cwd'] = './managementportal'
@@ -208,7 +208,7 @@ def aserverinstall():
     aserver.configure()
     #update process.json: replace existing Aserver entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Aserver':
             process['apps'][i]['script'] = './aserver/app.js'
             process['apps'][i]['cwd'] = './aserver'
@@ -239,7 +239,7 @@ def userverinstall():
     userver.configure()
     #update process.json: replace existing Userver entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Userver':
             process['apps'][i]['script'] = './userver/app.js'
             process['apps'][i]['cwd'] = './userver'
@@ -271,7 +271,7 @@ def fendeskinstall():
     fendesk.configure()
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Fendesk':
             process['apps'][i]['script'] = './fendesk/app.js'
             process['apps'][i]['cwd'] = './fendesk'
@@ -309,7 +309,7 @@ def quickinstall():
     acedirect.configure()
     #update process.json: replace existing ACE Direct entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'ACE Direct':
             process['apps'][i]['script'] = './acedirect/adserver.js'
             process['apps'][i]['cwd'] = './acedirect'
@@ -332,7 +332,7 @@ def quickinstall():
     acrcdr.configure()
     #update process.json: replace existing CDR entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'CDR':
             process['apps'][i]['script'] = './acr-cdr/app.js'
             process['apps'][i]['cwd'] = './acr-cdr'
@@ -356,7 +356,7 @@ def quickinstall():
     mgmt.configure()
     #update process.json: replace existing Management entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Management Dashboard':
             process['apps'][i]['script'] = './managementportal/server-db.js'
             process['apps'][i]['cwd'] = './managementportal'
@@ -380,7 +380,7 @@ def quickinstall():
     aserver.configure()
     #update process.json: replace existing Aserver entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Aserver':
             process['apps'][i]['script'] = './aserver/app.js'
             process['apps'][i]['cwd'] = './aserver'
@@ -404,7 +404,7 @@ def quickinstall():
     userver.configure()
     #update process.json: replace existing Userver entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Userver':
             process['apps'][i]['script'] = './userver/app.js'
             process['apps'][i]['cwd'] = './userver'
@@ -428,7 +428,7 @@ def quickinstall():
     fendesk.configure()
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
-    for i in len(process['apps']):
+    for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Fendesk':
             process['apps'][i]['script'] = './fendesk/app.js'
             process['apps'][i]['cwd'] = './fendesk'
