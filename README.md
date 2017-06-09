@@ -45,6 +45,9 @@ python ./installer.py
 Follow the instructions; select any subset of the repositories to install. To install all repositories,
 select the quick install option.
 
+5. For a one-click install, save the properly-configured, decoded configuration files in the /home/centos directory with the
+naming convention "config_<repository name>.json_TEMPLATE". Then choose the quick install option.
+
 ##Instructions for Use: asteriskinstall.py
 1. To run the asteriskinstall.py script, open the shell as sudo with the command
 ```sh
@@ -54,10 +57,10 @@ sudo -i
 2. After configuring the proxy, run the script using the command
 
 ```sh
-python ./asteriskinstall.py \<public_ip> \<local_ip> \<dial_in> \<stun_server> \<crt_file> \<crt_key> \<ss_crt> \<ss_ca_crt>
+python ./asteriskinstall.py
 ```
 
-where the options are as follows:
+When prompted, enter values for the following options:
 
 * \<public_ip>: The external/public IP address of the Asterisk server
 
@@ -67,10 +70,6 @@ where the options are as follows:
 
 * \<stun_server>: STUN/TURN server address:port (we recommend building a dedicated STUN server, but a public STUN server can be used if desired)
 
-* \<crt_file>: SSL certificate for Asterisk server (generating using a Certificate Authority such as GoDaddy)
+* \<public_key>: Public key for Asterisk server
 
 * \<crt_key>: Private key for Asterisk server 
-
-* \<ss_crt>: Self-signed cert file for server (follow [these instructions](https://wiki.asterisk.org/wiki/display/AST/Secure+Calling+Tutorial) to create a self-signed cert for Asterisk)
-
-* \<ss_ca_crt>: The CA file used to generate the above self-signed cert
