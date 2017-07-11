@@ -46,7 +46,7 @@ Follow the instructions; select any subset of the repositories to install. To in
 select the quick install option.
 
 5. For a one-click install, save the properly-configured, decoded configuration files in the /home/centos directory with the
-naming convention "config_<repository name>.json_TEMPLATE". Then choose the quick install option.
+naming convention "config_<i>repository name</i>.json_TEMPLATE". Then choose the quick install option.
 
 
 ## Instructions for Use: asteriskinstall.py
