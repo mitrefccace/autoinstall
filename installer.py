@@ -16,10 +16,9 @@ import json
 class Repository:
 
     #constructor
-    def __init__(self, name, giturl, server):
+    def __init__(self, name, giturl):
         self.name = name
         self.giturl = giturl
-        self.server = server
         
     #pull method -- git clone if the repo doesn't exist locally; error message if it does exist locally
     def pull(self):
@@ -86,7 +85,8 @@ def main_menu():
     print "4. Install Aserver"
     print "5. Install Userver"
     print "6. Install Fendesk"
-    print "7. Quick install (all servers)"
+    print "7. Install Virtual Agent"
+    print "8. Quick install (all servers)"
     print "\n0. Finish installation process"
     choice = raw_input(" >>  ")
     exec_menu(choice)
@@ -107,7 +107,7 @@ def exec_menu(choice):
  
 # Menu 1
 def acedirectinstall():
-    acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git','adserver.js')
+    acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git')
     print "Installing ACE Direct \n"
     acedirect.pull()
     acedirect.install()
@@ -139,7 +139,7 @@ def acedirectinstall():
  
 # Menu 2
 def acrcdrinstall():
-    acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git','app.js')
+    acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git')
     print "Installing ACR-CDR \n"
     acrcdr.pull()
     acrcdr.install()
@@ -169,7 +169,7 @@ def acrcdrinstall():
  
 # Menu 3
 def mgmtinstall():
-    mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git','server-db.js')
+    mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git')
     print "Installing Management Portal \n"
     mgmt.pull()
     mgmt.install()
@@ -200,7 +200,7 @@ def mgmtinstall():
 
 # Menu 4
 def aserverinstall():
-    aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git','app.js')
+    aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git')
     print "Installing Aserver \n"
     aserver.pull()
     aserver.install()
@@ -231,7 +231,7 @@ def aserverinstall():
     
 # Menu 5
 def userverinstall():
-    userver = Repository('userver','https://github.com/mitrefccace/userver.git','app.js')
+    userver = Repository('userver','https://github.com/mitrefccace/userver.git')
     print "Installing Userver \n"
     userver.pull()
     userver.install()
@@ -263,7 +263,7 @@ def userverinstall():
 
 #     Menu 6 - Fendesk currently not part of github
 def fendeskinstall():
-    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git','app.js')
+    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git')
     print "Installing Fendesk \n"
     fendesk.pull()
     fendesk.install()
@@ -293,14 +293,46 @@ def fendeskinstall():
     return
  
 # Menu 7
+def virtualagentinstall():
+    virtualagent = Repository('virtualagent','ssh://git@git.codev.mitre.org/acrdemo/virtualagent.git')
+    print "Installing Virtualagent \n"
+    virtualagent.pull()
+    virtualagent.install()
+    subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
+    virtualagent.configure()
+    #update process.json: replace existing Fendesk entry or create new entry
+    updated = False
+    for i in range(len(process['apps'])):
+        if process['apps'][i]['name'] == 'Virtualagent':
+            process['apps'][i]['script'] = './virtualagent/bin/www'
+            process['apps'][i]['cwd'] = './virtualagent'
+            process['apps'][i]['out_file'] = './logs/pm2-virtualagent.log'
+            process['apps'][i]['error_file'] = './logs/pm2-virtualagent-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Virtualagent',
+            'script': './virtualagent/bin/www',
+            'cwd': './virtualagent',
+            'out_file': './logs/pm2-virtualagent.log',
+            'error_file': './logs/pm2-virtualagent-error.log'
+        })
+    print "Virtualagent installation complete. Returning to main menu..."
+    sys.stdout.flush()
+    sleep(2)
+    menu_actions['main_menu']()
+    return
+    
+# Menu 8
 def quickinstall():
     #gather all repos
-    acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git','adserver.js')
-    acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git','app.js')
-    mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git','server-db.js')
-    aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git','app.js')
-    userver = Repository('userver','https://github.com/mitrefccace/userver.git','app.js')
-    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git','app.js')
+    acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git')
+    acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git')
+    mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git')
+    aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git')
+    userver = Repository('userver','https://github.com/mitrefccace/userver.git')
+    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git')
+    virtualagent = Repository('virtualagent','ssh://git@git.codev.mitre.org/acrdemo/virtualagent.git')
     #installation process for ACE Direct
     print "Installing ACE Direct \n"
     acedirect.pull()
@@ -444,6 +476,29 @@ def quickinstall():
             'error_file': './logs/pm2-fendesk-error.log'
         })
     print "Fendesk installation complete."
+    print "Installing Virtualagent \n"
+    virtualagent.pull()
+    virtualagent.install()
+    subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
+    virtualagent.configure()
+    #update process.json: replace existing Fendesk entry or create new entry
+    updated = False
+    for i in range(len(process['apps'])):
+        if process['apps'][i]['name'] == 'Virtualagent':
+            process['apps'][i]['script'] = './virtualagent/bin/www'
+            process['apps'][i]['cwd'] = './virtualagent'
+            process['apps'][i]['out_file'] = './logs/pm2-virtualagent.log'
+            process['apps'][i]['error_file'] = './logs/pm2-virtualagent-error.log'
+            updated = True
+    if updated == False:
+        process['apps'].append({  
+            'name': 'Virtualagent',
+            'script': './virtualagent/bin/www',
+            'cwd': './virtualagent',
+            'out_file': './logs/pm2-virtualagent.log',
+            'error_file': './logs/pm2-virtualagent-error.log'
+        })
+    print "Virtualagent installation complete."
     finish()
     return
         
@@ -470,7 +525,8 @@ menu_actions = {
     '4': aserverinstall,
     '5': userverinstall,
     '6': fendeskinstall,
-    '7': quickinstall,
+    '7': virtualagentinstall,
+    '8': quickinstall,
     '0': finish,
 }
  
