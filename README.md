@@ -4,9 +4,8 @@ clone or pull the necessary repositories from GitHub. Then for each repository t
 and their dependencies, set up the configuration files, and finally start their associated servers. The scripts 
 include an option to use HashConfig, an automated configuration and encoding tool, during the configuration 
 process. The following diagram visually describes the installation script.
-<p align="left">
-	<img src="autoinstalldiagram.png" width="700" alt="Flowchart describing the installation scripts."/>
-</p>
+
+![Flowchart describing the installation scripts.](autoinstalldiagram.png)
 
 ## Code Structure
 The script installer.py allows the user to install any of the following repositories in any order:
