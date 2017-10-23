@@ -294,7 +294,7 @@ def fendeskinstall():
  
 # Menu 7
 def virtualagentinstall():
-    virtualagent = Repository('virtualagent','ssh://git@git.codev.mitre.org/acrdemo/virtualagent.git')
+    virtualagent = Repository('virtualagent','https://github.com/mitrefccace/virtualagent.git')
     print "Installing Virtualagent \n"
     virtualagent.pull()
     virtualagent.install()
@@ -332,7 +332,7 @@ def quickinstall():
     aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git')
     userver = Repository('userver','https://github.com/mitrefccace/userver.git')
     fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git')
-    virtualagent = Repository('virtualagent','ssh://git@git.codev.mitre.org/acrdemo/virtualagent.git')
+    virtualagent = Repository('virtualagent','https://github.com/mitrefccace/virtualagent.git')
     #installation process for ACE Direct
     print "Installing ACE Direct \n"
     acedirect.pull()

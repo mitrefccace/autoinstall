@@ -9,7 +9,7 @@ process. The following diagram visually describes the installation script.
 
 ## Code Structure
 The script installer.py allows the user to install any of the following repositories in any order:
-ACE Direct, ACR-CDR, Management Portal, Aserver, Userver, Fendesk, and Virtualagent.
+ACE Direct, ACR-CDR, Management Portal, Aserver, Userver, Fendesk, and Virtual Agent.
 
 ## Prerequisites
 The installation scripts require the following:
