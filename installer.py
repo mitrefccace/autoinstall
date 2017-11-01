@@ -561,7 +561,7 @@ In order to check for installation on this machine, run the command "rpm -qa |gr
     subprocess.call(['sudo', 'yum', 'install', 'nodejs'])
     #set up hashconfig
     print 'Installing HashConfig tool for configuration process...'
-    hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git','hconfig.js')
+    hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git')
     hashconfig.pull()
     hashconfig.install()
     print 'HashConfig installation complete. Installing pm2, bower, and apidoc...'
