@@ -34,7 +34,7 @@ The installation scripts require the following:
 ```sh
 python ./installer.py
 ```
-Follow the instructions; select any subset of the repositories to install. To install all repositories,
+as root. Follow the instructions; select any subset of the repositories to install. To install all repositories,
 select the quick install option.
 
 5. For a one-click install, save the properly-configured, decoded configuration files in the /home/centos directory with the
