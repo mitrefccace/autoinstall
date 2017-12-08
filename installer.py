@@ -46,7 +46,7 @@ class Repository:
             templatePrompt = textwrap.fill('Please enter the full path to the configuration template file for ' + self.name +', or press enter to use the default file: ',width=80)
             template = raw_input(templatePrompt)
             if template == '':
-                template = 'config.json_TEMPLATE'
+                template = '/home/centos/' + self.name + '/config.json_TEMPLATE'
             ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
             if ans == 'y':
                 print 'Please follow prompts to generate the configuration file...'
