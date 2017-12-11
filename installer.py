@@ -12,6 +12,7 @@ import os.path
 from time import sleep
 import platform
 import json
+import textwrap
 
 class Repository:
 
@@ -42,9 +43,10 @@ class Repository:
             subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
             subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
         else:
-            template = raw_input('Please enter the full path to the configuration template file for ' + self.name +', or press enter to use the default file: ')
+            templatePrompt = textwrap.fill('Please enter the full path to the configuration template file for ' + self.name +', or press enter to use the default file: ',width=80)
+            template = raw_input(templatePrompt)
             if template == '':
-                template = 'config.json_TEMPLATE'
+                template = '/home/centos/' + self.name + '/config.json_TEMPLATE'
             ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
             if ans == 'y':
                 print 'Please follow prompts to generate the configuration file...'
@@ -128,7 +130,9 @@ def acedirectinstall():
             'script': './acedirect/adserver.js',
             'cwd': './acedirect',
             'out_file': './logs/pm2-adserver.log',
-            'error_file': './logs/pm2-adserver-error.log'
+            'error_file': './logs/pm2-adserver-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "ACE Direct installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -159,7 +163,9 @@ def acrcdrinstall():
             'script': './acr-cdr/app.js',
             'cwd': './acr-cdr',
             'out_file': './logs/pm2-app.log',
-            'error_file': './logs/pm2-app-error.log'
+            'error_file': './logs/pm2-app-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "ACR-CDR installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -190,7 +196,9 @@ def mgmtinstall():
             'script': './managementportal/server-db.js',
             'cwd': './managementportal',
             'out_file': './logs/pm2-server-db.log',
-            'error_file': './logs/pm2-server-db-error.log'
+            'error_file': './logs/pm2-server-db-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Management portal installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -221,7 +229,9 @@ def aserverinstall():
             'script': './aserver/app.js',
             'cwd': './aserver',
             'out_file': './logs/pm2-aserver.log',
-            'error_file': './logs/pm2-aserver-error.log'
+            'error_file': './logs/pm2-aserver-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Aserver installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -252,7 +262,9 @@ def userverinstall():
             'script': './userver/app.js',
             'cwd': './userver',
             'out_file': './logs/pm2-userver.log',
-            'error_file': './logs/pm2-userver-error.log'
+            'error_file': './logs/pm2-userver-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Userver installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -284,7 +296,9 @@ def fendeskinstall():
             'script': './fendesk/app.js',
             'cwd': './fendesk',
             'out_file': './logs/pm2-fendesk.log',
-            'error_file': './logs/pm2-fendesk-error.log'
+            'error_file': './logs/pm2-fendesk-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Fendesk installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -315,7 +329,9 @@ def virtualagentinstall():
             'script': './virtualagent/bin/www',
             'cwd': './virtualagent',
             'out_file': './logs/pm2-virtualagent.log',
-            'error_file': './logs/pm2-virtualagent-error.log'
+            'error_file': './logs/pm2-virtualagent-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Virtualagent installation complete. Returning to main menu..."
     sys.stdout.flush()
@@ -354,7 +370,9 @@ def quickinstall():
             'script': './acedirect/adserver.js',
             'cwd': './acedirect',
             'out_file': './logs/pm2-adserver.log',
-            'error_file': './logs/pm2-adserver-error.log'
+            'error_file': './logs/pm2-adserver-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "ACE Direct installation complete."
     #installation process for ACR-CDR
@@ -377,7 +395,9 @@ def quickinstall():
             'script': './acr-cdr/app.js',
             'cwd': './acr-cdr',
             'out_file': './logs/pm2-app.log',
-            'error_file': './logs/pm2-app-error.log'
+            'error_file': './logs/pm2-app-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "ACR-CDR installation complete."
     #installation process for Management Portal
@@ -401,7 +421,9 @@ def quickinstall():
             'script': './managementportal/server-db.js',
             'cwd': './managementportal',
             'out_file': './logs/pm2-server-db.log',
-            'error_file': './logs/pm2-server-db-error.log'
+            'error_file': './logs/pm2-server-db-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Management portal installation complete."
     #installation process for Aserver
@@ -425,7 +447,9 @@ def quickinstall():
             'script': './aserver/app.js',
             'cwd': './aserver',
             'out_file': './logs/pm2-aserver.log',
-            'error_file': './logs/pm2-aserver-error.log'
+            'error_file': './logs/pm2-aserver-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Aserver installation complete."
     #installation process for Userver
@@ -449,7 +473,9 @@ def quickinstall():
             'script': './userver/app.js',
             'cwd': './userver',
             'out_file': './logs/pm2-userver.log',
-            'error_file': './logs/pm2-userver-error.log'
+            'error_file': './logs/pm2-userver-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Userver installation complete."
     #installation process for Fendesk
@@ -473,7 +499,9 @@ def quickinstall():
             'script': './fendesk/app.js',
             'cwd': './fendesk',
             'out_file': './logs/pm2-fendesk.log',
-            'error_file': './logs/pm2-fendesk-error.log'
+            'error_file': './logs/pm2-fendesk-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Fendesk installation complete."
     print "Installing Virtualagent \n"
@@ -496,7 +524,9 @@ def quickinstall():
             'script': './virtualagent/bin/www',
             'cwd': './virtualagent',
             'out_file': './logs/pm2-virtualagent.log',
-            'error_file': './logs/pm2-virtualagent-error.log'
+            'error_file': './logs/pm2-virtualagent-error.log',
+            'max_restarts': 10,
+            'min_uptime': '5s'
         })
     print "Virtualagent installation complete."
     finish()
@@ -545,8 +575,10 @@ if __name__ == "__main__":
     if dist != 'centos' and dist != 'redhat' and dist != 'fedora':
         print 'Installation script can only be run on CentOS, RedHat, or Fedora. Terminating...'
         quit()
-    print 'MySQL must be installed prior to installing several of the available modules in this script. \
-In order to check for installation on this machine, run the command "rpm -qa |grep mysql".'
+    mySqlNotice = textwrap.fill('MySQL must be installed prior to installing several of the available ' \
+                                + 'modules in this script. In order to check for installation on this machine, ' \
+                                + 'run the command "rpm -qa |grep mysql".', width=80)
+    print mySqlNotice
     sys.stdout.flush()
     sleep(1.5)
     #create dat directory
