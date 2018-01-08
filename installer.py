@@ -35,30 +35,6 @@ class Repository:
     #install method -- run npm install
     def install(self):
         subprocess.call(['npm','install'], cwd=self.name)
-
-    #configure method -- use HashConfig
-    def configure(self):
-        if os.path.isfile('/home/centos/config_' + self.name + '.json_TEMPLATE'):
-            subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_' + self.name + '.json_TEMPLATE'], cwd = hashconfig.name)
-            subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
-            subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
-        else:
-            templatePrompt = textwrap.fill('Please enter the full path to the configuration template file for ' + self.name +', or press enter to use the default file: ',width=80)
-            template = raw_input(templatePrompt)
-            if template == '':
-                template = '/home/centos/' + self.name + '/config.json_TEMPLATE'
-            ans = raw_input('Do you want to edit the configuration file for %s? (y/n)' % self.name)
-            if ans == 'y':
-                print 'Please follow prompts to generate the configuration file...'
-                subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
-                subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
-                subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
-            elif ans == 'n':
-                subprocess.call(['node','hconfig.js', '-fn', template], cwd = hashconfig.name)
-                subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
-                subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
-            else:
-                print 'Invalid input. Must enter "y" or "n".'
  
 # Initialize menu options and process.json
 menu_actions  = {} 
@@ -80,7 +56,7 @@ else:
  
 # Main menu
 def main_menu():   
-    print "Please choose one of the following options:"
+    print "Please select one of the following options for installation. When finished, choose option 0 for configuration:"
     print "1. Install ACE Direct"
     print "2. Install ACR-CDR"
     print "3. Install Management Portal"
@@ -88,8 +64,8 @@ def main_menu():
     print "5. Install Userver"
     print "6. Install Fendesk"
     print "7. Install Virtual Agent"
-    print "8. Quick install (all servers)"
-    print "\n0. Finish installation process"
+    print "8. Quick installation & configuration (all servers)"
+    print "\n0. Finish installation, begin configuration"
     choice = raw_input(" >>  ")
     exec_menu(choice)
     return
@@ -114,7 +90,6 @@ def acedirectinstall():
     acedirect.pull()
     acedirect.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
-    acedirect.configure()
     #update process.json: replace existing ACE Direct entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -147,7 +122,6 @@ def acrcdrinstall():
     print "Installing ACR-CDR \n"
     acrcdr.pull()
     acrcdr.install()
-    acrcdr.configure()
     #update process.json: replace existing CDR entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -180,7 +154,6 @@ def mgmtinstall():
     mgmt.pull()
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
-    mgmt.configure()
     #update process.json: replace existing Management entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -213,7 +186,6 @@ def aserverinstall():
     aserver.pull()
     aserver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
-    aserver.configure()
     #update process.json: replace existing Aserver entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -246,7 +218,6 @@ def userverinstall():
     userver.pull()
     userver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
-    userver.configure()
     #update process.json: replace existing Userver entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -280,7 +251,6 @@ def fendeskinstall():
     fendesk.pull()
     fendesk.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
-    fendesk.configure()
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -313,7 +283,6 @@ def virtualagentinstall():
     virtualagent.pull()
     virtualagent.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
-    virtualagent.configure()
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -354,7 +323,6 @@ def quickinstall():
     acedirect.pull()
     acedirect.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
-    acedirect.configure()
     #update process.json: replace existing ACE Direct entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -379,7 +347,6 @@ def quickinstall():
     print "Installing ACR-CDR \n"
     acrcdr.pull()
     acrcdr.install()
-    acrcdr.configure()
     #update process.json: replace existing CDR entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -405,7 +372,6 @@ def quickinstall():
     mgmt.pull()
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
-    mgmt.configure()
     #update process.json: replace existing Management entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -431,7 +397,6 @@ def quickinstall():
     aserver.pull()
     aserver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
-    aserver.configure()
     #update process.json: replace existing Aserver entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -457,7 +422,6 @@ def quickinstall():
     userver.pull()
     userver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
-    userver.configure()
     #update process.json: replace existing Userver entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -483,7 +447,6 @@ def quickinstall():
     fendesk.pull()
     fendesk.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
-    fendesk.configure()
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -508,7 +471,6 @@ def quickinstall():
     virtualagent.pull()
     virtualagent.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
-    virtualagent.configure()
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -535,11 +497,31 @@ def quickinstall():
     
 # Exit program
 def finish():
+    print 'Beginning configuration...'
+    configure()
     print 'Writing process.json and starting servers of the installed components...'
     with open('process.json', 'w') as outfile:  
         json.dump(process, outfile)
     subprocess.call(['pm2','start','process.json'])
     sys.exit()
+
+#Configuration
+def configure():
+    if os.path.isfile('/home/centos/config_acedirect.json_TEMPLATE'):
+        print 'Using pre-configured file...'
+        subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'], cwd = hashconfig.name)
+        subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
+        subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
+    else:
+        templatePrompt = textwrap.fill('Please enter the full path to the configuration template file, or press enter to use the default file: ',width=80)
+        template = raw_input(templatePrompt)
+        if template == '':
+            template = '/home/centos/dat/config_desc.json'
+        print 'Please follow prompts to generate the configuration file...'
+        subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
+        subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
+        subprocess.call(['cp', 'hashconfig/config.json', 'dat/config.json'])
+
 
     
 # =======================
@@ -591,6 +573,9 @@ if __name__ == "__main__":
     subprocess.call(['sudo', 'yum', 'install', 'git'])
     subprocess.call(['sudo', 'yum', 'install', 'wget'])
     subprocess.call(['sudo', 'yum', 'install', 'nodejs'])
+    #install dat
+    print 'Pulling configuration files...'
+    dat = Repository('dat','https://github.com/mitrefccace/dat.git')
     #set up hashconfig
     print 'Installing HashConfig tool for configuration process...'
     hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git')
