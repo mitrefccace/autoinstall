@@ -510,17 +510,15 @@ def configure():
     if os.path.isfile('/home/centos/config_acedirect.json_TEMPLATE'):
         print 'Using pre-configured file...'
         subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'], cwd = hashconfig.name)
-        subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
-        subprocess.call(['cp', 'hashconfig/config.json', self.name + '/config.json'])
+        subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
     else:
         templatePrompt = textwrap.fill('Please enter the full path to the configuration template file, or press enter to use the default file: ',width=80)
         template = raw_input(templatePrompt)
         if template == '':
-            template = '/home/centos/dat/config_desc.json'
+            template = '/home/centos/dat/parameter_desc.json'
         print 'Please follow prompts to generate the configuration file...'
         subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
-        subprocess.call(['mv','config_new.json','config.json'], cwd = hashconfig.name)
-        subprocess.call(['cp', 'hashconfig/config.json', 'dat/config.json'])
+        subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
 
 
     
@@ -564,18 +562,34 @@ if __name__ == "__main__":
     sys.stdout.flush()
     sleep(1.5)
     #create dat directory
-    out = subprocess.check_output('test -e dat && echo -n True || echo -n False', shell=True)
-    out_bool = out.lower() in ("false")
-    if out_bool:
-        print 'Creating dat directory...'
-        subprocess.call('mkdir dat', shell=True)
+    # out = subprocess.check_output('test -e dat && echo -n True || echo -n False', shell=True)
+    # out_bool = out.lower() in ("false")
+    # if out_bool:
+    #     print 'Creating dat directory...'
+    #     subprocess.call('mkdir dat', shell=True)
+
+    print 'Installing Git, wget, Node.js, and MongoDB...'
+    sleep(1)
     #install git, wget, and node.js
     subprocess.call(['sudo', 'yum', 'install', 'git'])
     subprocess.call(['sudo', 'yum', 'install', 'wget'])
     subprocess.call(['sudo', 'yum', 'install', 'nodejs'])
+
+    #install mongoDB
+    subprocess.call(['sudo', 'touch', '/etc/yum.repos.d/mongodb-org.repo'])
+    subprocess.call(['echo', '\'[mongodb-org-3.4]\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
+    subprocess.call(['echo', '\'name=MongoDB Repository\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
+    subprocess.call(['echo', '\'baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
+    subprocess.call(['echo', '\'gpgcheck=1\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
+    subprocess.call(['echo', '\'enabled=1\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
+    subprocess.call(['echo', '\'gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
+    subprocess.call(['sudo', 'yum', 'install', 'mongodb-org'])
+    subprocess.call(['sudo', 'systemctl', 'start', 'mongod'])
+
     #install dat
     print 'Pulling configuration files...'
     dat = Repository('dat','https://github.com/mitrefccace/dat.git')
+
     #set up hashconfig
     print 'Installing HashConfig tool for configuration process...'
     hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git')
@@ -589,7 +603,9 @@ if __name__ == "__main__":
     subprocess.call(['npm','install','apidoc','-g'])
     sys.stdout.flush()
     sleep(1)
+
     #stop all processes
     subprocess.call(['pm2','kill'])
+
     # Launch main menu
     main_menu()
