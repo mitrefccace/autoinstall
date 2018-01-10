@@ -1,9 +1,10 @@
 # Automated Installation Script
 This is the README.md file for the automated installation script for ACE Direct. The installation script 
-clones or pulls the necessary repositories from GitHub. Then for each repository the script installs packages 
-and their dependencies, sets up the configuration files, and finally starts their associated servers. The script 
-includes an option to use HashConfig, an automated configuration and encoding tool, during the configuration 
-process. The following diagram visually describes the installation script.
+clones or pulls the necessary repositories from GitHub, and installs required packages and their dependencies.
+After all repositories are installed, the script prompts the user for editing the global configuration file.
+Finally, it starts the installed and configured servers. The script includes an option to use HashConfig, an 
+automated configuration and encoding tool, during the configuration process. The following diagram visually 
+describes the installation script.
 
 ![Flowchart describing the installation script.](autoinstalldiagram.png)
 
@@ -32,10 +33,11 @@ The installation scripts require the following:
 
 4. Run 
 ```sh
-python ./installer.py
+python ./installer.py -s <Git source> -b <Git branch>
 ```
-as root. Follow the instructions; select any subset of the repositories to install. To install all repositories,
-select the quick install option.
+The Git source to be used is "ssh://github.com/mitrefccace", and the recommended Git branch is "v2.0", although the user can choose any
+available branch or tag from GitHub. While the script is running, follow any user prompts. Select any subset of the repositories to 
+install. To install all repositories, select the quick install option.
 
-5. For a one-click install, save the properly-configured, decoded configuration files in the /home/centos directory with the
-naming convention "config_<i>repository name</i>.json_TEMPLATE". Then choose the quick install option.
+5. For a one-click install, save the properly-configured, decoded configuration file in the /home/centos directory with the
+naming convention "config_acedirect.json_TEMPLATE". Then choose the quick install option.

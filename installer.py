@@ -22,7 +22,7 @@ class Repository:
         self.giturl = giturl
         
     #pull method -- git clone if the repo doesn't exist locally; error message if it does exist locally
-    def pull(self):
+    def pull(self, branch):
         out = subprocess.check_output('test -e %s && echo -n True || echo -n False' % self.name, shell=True)
         out_bool = out.lower() in ("true")
         if out_bool:
@@ -30,7 +30,7 @@ class Repository:
             subprocess.call('git pull', shell=True, cwd=self.name)
         else:
             subprocess.call('git clone %s' % self.giturl, shell=True)
-        subprocess.call('git checkout v2.0', shell=True, cwd=self.name)
+        subprocess.call('git checkout %s' % branch, shell=True, cwd=self.name)
 
     #install method -- run npm install
     def install(self):
@@ -85,9 +85,9 @@ def exec_menu(choice):
  
 # Menu 1
 def acedirectinstall():
-    acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git')
+    acedirect = Repository('acedirect', gitSource + '/acedirect.git')
     print "Installing ACE Direct \n"
-    acedirect.pull()
+    acedirect.pull(branch)
     acedirect.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
     #update process.json: replace existing ACE Direct entry or create new entry
@@ -118,9 +118,9 @@ def acedirectinstall():
  
 # Menu 2
 def acrcdrinstall():
-    acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git')
+    acrcdr = Repository('acr-cdr', gitSource + '/acr-cdr.git')
     print "Installing ACR-CDR \n"
-    acrcdr.pull()
+    acrcdr.pull(branch)
     acrcdr.install()
     #update process.json: replace existing CDR entry or create new entry
     updated = False
@@ -149,9 +149,9 @@ def acrcdrinstall():
  
 # Menu 3
 def mgmtinstall():
-    mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git')
+    mgmt = Repository('managementportal', gitSource + '/managementportal.git')
     print "Installing Management Portal \n"
-    mgmt.pull()
+    mgmt.pull(branch)
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
     #update process.json: replace existing Management entry or create new entry
@@ -181,9 +181,9 @@ def mgmtinstall():
 
 # Menu 4
 def aserverinstall():
-    aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git')
+    aserver = Repository('aserver', gitSource + '/aserver.git')
     print "Installing Aserver \n"
-    aserver.pull()
+    aserver.pull(branch)
     aserver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
     #update process.json: replace existing Aserver entry or create new entry
@@ -213,9 +213,9 @@ def aserverinstall():
     
 # Menu 5
 def userverinstall():
-    userver = Repository('userver','https://github.com/mitrefccace/userver.git')
+    userver = Repository('userver', gitSource + '/userver.git')
     print "Installing Userver \n"
-    userver.pull()
+    userver.pull(branch)
     userver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
     #update process.json: replace existing Userver entry or create new entry
@@ -246,9 +246,9 @@ def userverinstall():
 
 #     Menu 6 - Fendesk currently not part of github
 def fendeskinstall():
-    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git')
+    fendesk = Repository('fendesk', gitSource + '/fendesk.git')
     print "Installing Fendesk \n"
-    fendesk.pull()
+    fendesk.pull(branch)
     fendesk.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
     #update process.json: replace existing Fendesk entry or create new entry
@@ -278,9 +278,9 @@ def fendeskinstall():
  
 # Menu 7
 def virtualagentinstall():
-    virtualagent = Repository('virtualagent','https://github.com/mitrefccace/virtualagent.git')
+    virtualagent = Repository('virtualagent', gitSource + '/virtualagent.git')
     print "Installing Virtualagent \n"
-    virtualagent.pull()
+    virtualagent.pull(branch)
     virtualagent.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
     #update process.json: replace existing Fendesk entry or create new entry
@@ -311,16 +311,23 @@ def virtualagentinstall():
 # Menu 8
 def quickinstall():
     #gather all repos
-    acedirect = Repository('acedirect','https://github.com/mitrefccace/acedirect.git')
-    acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git')
-    mgmt = Repository('managementportal','https://github.com/mitrefccace/managementportal.git')
-    aserver = Repository('aserver','https://github.com/mitrefccace/aserver.git')
-    userver = Repository('userver','https://github.com/mitrefccace/userver.git')
-    fendesk = Repository('fendesk','https://github.com/mitrefccace/fendesk.git')
-    virtualagent = Repository('virtualagent','https://github.com/mitrefccace/virtualagent.git')
+    acedirect = Repository('acedirect', gitSource + '/acedirect.git')
+    acrcdr = Repository('acr-cdr', gitSource +'/acr-cdr.git')
+    mgmt = Repository('managementportal', gitSource + '/managementportal.git')
+    aserver = Repository('aserver', gitSource + '/aserver.git')
+    userver = Repository('userver', gitSource + '/userver.git')
+    fendesk = Repository('fendesk', gitSource + '/fendesk.git')
+    virtualagent = Repository('virtualagent', gitSource + '/virtualagent.git')
+    # acedirect = Repository('acedirect', 'https://github.com/mitrefccace/acedirect.git')
+    # acrcdr = Repository('acr-cdr', 'https://github.com/mitrefccace/acr-cdr.git')
+    # mgmt = Repository('managementportal', 'https://github.com/mitrefccace/managementportal.git')
+    # aserver = Repository('aserver', 'https://github.com/mitrefccace/aserver.git')
+    # userver = Repository('userver', 'https://github.com/mitrefccace/userver.git')
+    # fendesk = Repository('fendesk', 'https://github.com/mitrefccace/fendesk.git')
+    # virtualagent = Repository('virtualagent', 'https://github.com/mitrefccace/virtualagent.git')
     #installation process for ACE Direct
     print "Installing ACE Direct \n"
-    acedirect.pull()
+    acedirect.pull(branch)
     acedirect.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
     #update process.json: replace existing ACE Direct entry or create new entry
@@ -345,7 +352,7 @@ def quickinstall():
     print "ACE Direct installation complete."
     #installation process for ACR-CDR
     print "Installing ACR-CDR \n"
-    acrcdr.pull()
+    acrcdr.pull(branch)
     acrcdr.install()
     #update process.json: replace existing CDR entry or create new entry
     updated = False
@@ -369,7 +376,7 @@ def quickinstall():
     print "ACR-CDR installation complete."
     #installation process for Management Portal
     print "Installing Management Portal \n"
-    mgmt.pull()
+    mgmt.pull(branch)
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
     #update process.json: replace existing Management entry or create new entry
@@ -394,7 +401,7 @@ def quickinstall():
     print "Management portal installation complete."
     #installation process for Aserver
     print "Installing Aserver \n"
-    aserver.pull()
+    aserver.pull(branch)
     aserver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
     #update process.json: replace existing Aserver entry or create new entry
@@ -419,7 +426,7 @@ def quickinstall():
     print "Aserver installation complete."
     #installation process for Userver
     print "Installing Userver \n"
-    userver.pull()
+    userver.pull(branch)
     userver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
     #update process.json: replace existing Userver entry or create new entry
@@ -444,7 +451,7 @@ def quickinstall():
     print "Userver installation complete."
     #installation process for Fendesk
     print "Installing Fendesk \n"
-    fendesk.pull()
+    fendesk.pull(branch)
     fendesk.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
     #update process.json: replace existing Fendesk entry or create new entry
@@ -468,7 +475,7 @@ def quickinstall():
         })
     print "Fendesk installation complete."
     print "Installing Virtualagent \n"
-    virtualagent.pull()
+    virtualagent.pull(branch)
     virtualagent.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
     #update process.json: replace existing Fendesk entry or create new entry
@@ -520,6 +527,14 @@ def configure():
         subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
 
+# Parse command line
+def getopts(argv):
+    opts = {}  # Empty dictionary to store key-value pairs.
+    while argv:  # While there are arguments left to parse...
+        if argv[0][0] == '-':  # Found a "-name value" pair.
+            opts[argv[0]] = argv[1]  # Add key and value to the dictionary.
+        argv = argv[1:]  # Reduce the argument list by copying it starting from index 1.
+    return opts					
 
     
 # =======================
@@ -546,6 +561,12 @@ menu_actions = {
  
 # Main Program
 if __name__ == "__main__":
+    #import command line args
+    myargs = getopts(sys.argv)
+    if '-s' in myargs:  #Git source
+        gitSource = myargs['-s']
+	if '-b' in myargs: #Git branch
+		branch = myargs['-b']
     #check operating system
     if platform.system() != 'Linux':
         print 'Installation script can only be run on Linux. Terminating...'
@@ -588,12 +609,15 @@ if __name__ == "__main__":
 
     #install dat
     print 'Pulling configuration files...'
-    dat = Repository('dat','https://github.com/mitrefccace/dat.git')
+    #dat = Repository('dat','https://github.com/mitrefccace/dat.git')
+    dat = Repository('dat', gitSource + '/dat.git')
+    dat.pull(branch)
 
     #set up hashconfig
     print 'Installing HashConfig tool for configuration process...'
-    hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git')
-    hashconfig.pull()
+    #hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git')
+    hashconfig = Repository('hashconfig', gitSource + '/hashconfig.git')
+    hashconfig.pull(branch)
     hashconfig.install()
     print 'HashConfig installation complete. Installing pm2, bower, and apidoc...'
     sys.stdout.flush()
