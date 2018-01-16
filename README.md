@@ -24,18 +24,10 @@ The installation scripts require the following:
 
 
 ## Instructions for Use
-1. Open the parent directory where the autoinstall repository will be placed; the home directory is suggested.
-
-2. Clone this repository. 
- 
-3. Copy installer.py from the autoinstall directory to the home directory, and enter the home directory.
-
-4. Run 
-```sh
-python ./installer.py
+1. Run
 ```
-as root. Follow the instructions; select any subset of the repositories to install. To install all repositories,
+sudo bash  -c  'python <( curl  https://raw.githubusercontent.com/mitrefccace/autoinstall/master/installer.py)'
+```
+in the terminal. Follow the instructions; select any subset of the repositories to install. To install all repositories,
 select the quick install option.
 
-5. For a one-click install, save the properly-configured, decoded configuration files in the /home/centos directory with the
-naming convention "config_<i>repository name</i>.json_TEMPLATE". Then choose the quick install option.
