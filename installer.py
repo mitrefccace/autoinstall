@@ -576,18 +576,6 @@ if __name__ == "__main__":
     if dist != 'centos' and dist != 'redhat' and dist != 'fedora':
         print 'Installation script can only be run on CentOS, RedHat, or Fedora. Terminating...'
         quit()
-    mySqlNotice = textwrap.fill('MySQL must be installed prior to installing several of the available ' \
-                                + 'modules in this script. In order to check for installation on this machine, ' \
-                                + 'run the command "rpm -qa |grep mysql".', width=80)
-    print mySqlNotice
-    sys.stdout.flush()
-    sleep(1.5)
-    #create dat directory
-    # out = subprocess.check_output('test -e dat && echo -n True || echo -n False', shell=True)
-    # out_bool = out.lower() in ("false")
-    # if out_bool:
-    #     print 'Creating dat directory...'
-    #     subprocess.call('mkdir dat', shell=True)
 
     print 'Installing Git, wget, Node.js, and MongoDB...'
     sleep(1)

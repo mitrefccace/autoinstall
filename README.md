@@ -20,8 +20,6 @@ The installation scripts require the following:
 
 * Python 2.7 is installed on the user machine.
 
-* MySQL is installed on the user machine, and the user has access to the username and password.
-
 
 ## Instructions for Use
 1. Open the parent directory where the autoinstall repository will be placed; the home directory is suggested.
