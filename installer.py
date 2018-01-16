@@ -77,9 +77,9 @@ else:
 # =======================
 #     MENUS FUNCTIONS
 # =======================
- 
+
 # Main menu
-def main_menu():   
+def main_menu_choices():
     print "Please choose one of the following options:"
     print "1. Install ACE Direct"
     print "2. Install ACR-CDR"
@@ -91,7 +91,10 @@ def main_menu():
     print "8. Quick install (all servers)"
     print "\n0. Finish installation process"
     choice = raw_input(" >>  ")
-    exec_menu(choice)
+    return choice
+
+def main_menu():
+    exec_menu(main_menu_choices())
     return
  
 # Execute menu
@@ -579,8 +582,9 @@ if __name__ == "__main__":
                                 + 'modules in this script. In order to check for installation on this machine, ' \
                                 + 'run the command "rpm -qa |grep mysql".', width=80)
     print mySqlNotice
+    # Launch main menu
+    exe =main_menu_choices()
     sys.stdout.flush()
-    sleep(1.5)
     #create dat directory
     out = subprocess.check_output('test -e dat && echo -n True || echo -n False', shell=True)
     out_bool = out.lower() in ("false")
@@ -606,5 +610,4 @@ if __name__ == "__main__":
     sleep(1)
     #stop all processes
     subprocess.call(['pm2','kill'])
-    # Launch main menu
-    main_menu()
+    exec_menu(exe)
