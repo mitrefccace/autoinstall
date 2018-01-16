@@ -589,6 +589,8 @@ if __name__ == "__main__":
         ch = exe.lower()
         if ch == '':
             menu_actions['main_menu']()
+        elif ch=='0':
+            menu_actions[ch]()
         else:
             try:
                 menu_actions[ch]
