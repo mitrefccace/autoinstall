@@ -582,8 +582,21 @@ if __name__ == "__main__":
                                 + 'modules in this script. In order to check for installation on this machine, ' \
                                 + 'run the command "rpm -qa |grep mysql".', width=80)
     print mySqlNotice
+    validChoice = False
     # Launch main menu
-    exe =main_menu_choices()
+    while( not validChoice):
+        exe = main_menu_choices()
+        ch = exe.lower()
+        if ch == '':
+            menu_actions['main_menu']()
+        else:
+            try:
+                menu_actions[ch]
+                validChoice = true
+            except KeyError:
+                print "Invalid selection, please try again.\n"
+
+    
     sys.stdout.flush()
     #create dat directory
     out = subprocess.check_output('test -e dat && echo -n True || echo -n False', shell=True)
