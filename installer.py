@@ -592,7 +592,7 @@ if __name__ == "__main__":
         else:
             try:
                 menu_actions[ch]
-                validChoice = true
+                validChoice = True
             except KeyError:
                 print "Invalid selection, please try again.\n"
 
