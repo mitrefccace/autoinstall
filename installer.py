@@ -588,9 +588,9 @@ if __name__ == "__main__":
         print 'Creating dat directory...'
         subprocess.call('mkdir dat', shell=True)
     #install git, wget, and node.js
-    subprocess.call(['sudo', 'yum', 'install', 'git'])
-    subprocess.call(['sudo', 'yum', 'install', 'wget'])
-    subprocess.call(['sudo', 'yum', 'install', 'nodejs'])
+    subprocess.call(['yum', '-y', 'install', 'git'])
+    subprocess.call(['yum', '-y', 'install', 'wget'])
+    subprocess.call(['yum', '-y', 'install', 'nodejs'])
     #set up hashconfig
     print 'Installing HashConfig tool for configuration process...'
     hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git')
