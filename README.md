@@ -25,7 +25,8 @@ The installation scripts require the following:
 
 ## Instructions for Use
 1. Run
-```sudo bash  -c  'python <( curl  https://raw.githubusercontent.com/mitrefccace/autoinstall/master/installer.py)'
+```
+sudo bash  -c  'python <( curl  https://raw.githubusercontent.com/mitrefccace/autoinstall/master/installer.py)'
 ```
 in the terminal. Follow the instructions; select any subset of the repositories to install. To install all repositories,
 select the quick install option.
