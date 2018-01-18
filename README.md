@@ -32,11 +32,11 @@ The installation scripts require the following:
 ```sh
 python ./installer.py -s <Git source> -b <Git branch>
 ```
-The Git source to be used is "ssh://github.com/mitrefccace", and the recommended Git branch is "v3.0", although the user can choose any
-available branch or tag from GitHub. While the script is running, follow any user prompts. Select any subset of the repositories to 
+The Git source to be used is "ssh://github.com/mitrefccace", and the latest version should be used for the Git branch.
+While the script is running, follow any user prompts. Select any subset of the repositories to 
 install. To install all repositories, select the quick install option.
 
-5. For a one-click install, save the properly-configured, decoded configuration file in the /home/centos directory with the
+5. (Optional) For a one-click install, save the properly-configured, decoded configuration file in the /home/centos directory with the
 naming convention "config_acedirect.json_TEMPLATE". Then choose the quick install option.
 
 6. When installation is complete and the script has finished running, a PM2 status window will be displayed with the name of each server and its status. The servers should all have a status "online". To verify successful installation, run the command
