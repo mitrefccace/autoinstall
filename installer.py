@@ -523,7 +523,7 @@ def configure():
                                        width=80)
         encode = raw_input(encodePrompt)
         print 'Using pre-configured file...'
-        if encode = 'y':
+        if encode == 'y':
             subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'], cwd = hashconfig.name)
             subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
         else:
