@@ -519,24 +519,21 @@ def configure():
     if not os.path.isfile('/home/centos/dat/default_color_config.json'):
         subprocess.call(['cp', 'dat/default_color_config.json_TEMPLATE', 'dat/default_color_config.json'])
     if os.path.isfile('/home/centos/config_acedirect.json_TEMPLATE'):
-        encodePrompt = textwrap.fill('Do you want the configuration file config.json to be base64 encoded? (y/n): ',
-                                       width=80)
-        encode = raw_input(encodePrompt)
-        print 'Using pre-configured file...'
-        if encode == 'y':
-            subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'], cwd = hashconfig.name)
-            subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
-        else:
-            subprocess.call(['node', 'hconfig.js', '-fno', '/home/centos/config_acedirect.json_TEMPLATE'],
-                            cwd=hashconfig.name)
-            subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
+        subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'], cwd = hashconfig.name)
+        subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
     else:
         templatePrompt = textwrap.fill('Please enter the full path to the configuration template file, or press enter to use the default file: ',width=80)
         template = raw_input(templatePrompt)
         if template == '':
             template = '/home/centos/dat/config.json_TEMPLATE'
         print 'Please follow prompts to generate the configuration file. For more information about the configuration parameters, please refer to dat/parameter_desc.json.'
-        subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
+        encodePrompt = textwrap.fill('Do you want the configuration file config.json to be base64 encoded? (y/n): ',
+                                     width=80)
+        encode = raw_input(encodePrompt)
+        if encode == 'y':
+            subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
+        else:
+            subprocess.call(['node', 'hconfig.js', '-no', template], cwd=hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
 
 # Parse command line
