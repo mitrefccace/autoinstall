@@ -56,7 +56,8 @@ else:
  
 # Main menu
 def main_menu():   
-    print "Please select one of the following options for installation. When finished, choose option 0 for configuration:"
+    print "Please select one of the following options for installation. When finished, choose option 0 for " \
+          "configuration:"
     print "1. Install ACE Direct"
     print "2. Install ACR-CDR"
     print "3. Install Management Portal"
@@ -519,14 +520,17 @@ def configure():
     if not os.path.isfile('/home/centos/dat/default_color_config.json'):
         subprocess.call(['cp', 'dat/default_color_config.json_TEMPLATE', 'dat/default_color_config.json'])
     if os.path.isfile('/home/centos/config_acedirect.json_TEMPLATE'):
-        subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'], cwd = hashconfig.name)
+        subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'],
+                        cwd = hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
     else:
-        templatePrompt = textwrap.fill('Please enter the full path to the configuration template file, or press enter to use the default file: ',width=80)
+        templatePrompt = textwrap.fill('Please enter the full path to the configuration template file, or press enter to'
+                                       ' use the default file: ',width=80)
         template = raw_input(templatePrompt)
         if template == '':
             template = '/home/centos/dat/config.json_TEMPLATE'
-        print 'Please follow prompts to generate the configuration file. For more information about the configuration parameters, please refer to dat/parameter_desc.json.'
+        print 'Please follow prompts to generate the configuration file. For more information about the configuration ' \
+              'parameters, please refer to dat/parameter_desc.json.'
         encodePrompt = textwrap.fill('Do you want the configuration file config.json to be base64 encoded? (y/n): ',
                                      width=80)
         encode = raw_input(encodePrompt)
@@ -595,12 +599,18 @@ if __name__ == "__main__":
 
     #install mongoDB
     subprocess.call(['sudo', 'touch', '/etc/yum.repos.d/mongodb-org.repo'])
-    subprocess.call(['echo', '\'[mongodb-org-3.4]\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
-    subprocess.call(['echo', '\'name=MongoDB Repository\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
-    subprocess.call(['echo', '\'baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
-    subprocess.call(['echo', '\'gpgcheck=1\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
-    subprocess.call(['echo', '\'enabled=1\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
-    subprocess.call(['echo', '\'gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc\'', '>>', '/etc/yum.repos.d/mongodb-org.repo'])
+    subprocess.call(['echo', '\'[mongodb-org-3.4]\'', '|', 'sudo', 'tee', '-a', '/etc/yum.repos.d/mongodb-org.repo',
+                     '>', '/dev/null'])
+    subprocess.call(['echo', '\'name=MongoDB Repository\'', '|', 'sudo', 'tee', '-a',
+                     '/etc/yum.repos.d/mongodb-org.repo', '>', '/dev/null'])
+    subprocess.call(['echo', '\'baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/\'', '|',
+                     'sudo', 'tee', '-a', '/etc/yum.repos.d/mongodb-org.repo', '>', '/dev/null'])
+    subprocess.call(['echo', '\'gpgcheck=1\'', '|', 'sudo', 'tee', '-a', '/etc/yum.repos.d/mongodb-org.repo', '>',
+                     '/dev/null'])
+    subprocess.call(['echo', '\'enabled=1\'', '|', 'sudo', 'tee', '-a', '/etc/yum.repos.d/mongodb-org.repo', '>',
+                     '/dev/null'])
+    subprocess.call(['echo', '\'gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc\'', '|', 'sudo', 'tee', '-a',
+                     '/etc/yum.repos.d/mongodb-org.repo', '>', '/dev/null'])
     subprocess.call(['sudo', 'yum', 'install', 'mongodb-org'])
     subprocess.call(['sudo', 'systemctl', 'start', 'mongod'])
 
