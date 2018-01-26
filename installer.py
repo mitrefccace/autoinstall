@@ -546,7 +546,7 @@ def configure():
         config = json.load(data_file)
     nginx = Repository('nginx',gitSource + '/nginx.git')
     nginx.pull(branch)
-    if encoded = 'y':
+    if encoded == 'y':
         openam_fqdn = base64.decode(config['openam']['fqdn'])
         openam_port = base64.decode(config['openam']['port'])
         ace_direct_port = base64.decode(config['ace_direct']['https_listen_port'])
