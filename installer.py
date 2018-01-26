@@ -514,6 +514,7 @@ def configure_and_start_servers():
 
 #Configuration
 def configure():
+    #configure node servers with config.json
     if not os.path.isfile('/home/centos/dat/color_config.json'):
         subprocess.call(['cp', 'dat/color_config.json_TEMPLATE', 'dat/color_config.json'])
     if not os.path.isfile('/home/centos/dat/default_color_config.json'):
@@ -538,6 +539,24 @@ def configure():
         else:
             subprocess.call(['node', 'hconfig.js', '-no', template], cwd=hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
+    #configure nginx with nginx.conf
+    with open('/home/centos/dat/config.json') as data_file:
+        config = json.load(data_file)
+    nginx = Repository('nginx',gitSource + '/nginx.git')
+    nginx.pull(branch)
+    openam_fqdn = config['openam']['fqdn']
+    subprocess.call('sed -i -e \'s/<OPENAM FQDN>/' + openam_fqdn + '/g\' nginx/nginx.conf', shell=True)
+    openam_port = config['openam']['port']
+    subprocess.call('sed -i -e \'s/<OPENAM PORT>/' + openam_port + '/g\' nginx/nginx.conf', shell=True)
+    ace_direct_port = config['ace_direct']['https_listen_port']
+    subprocess.call('sed -i -e \'s/<ACE DIRECT PORT>/' + ace_direct_port + '/g\' nginx/nginx.conf',
+                    shell=True)
+    management_portal_port = config['management_portal']['https_listen_port']
+    subprocess.call('sed -i -e \'s/<MANAGEMENT PORTAL PORT>/' + management_portal_port +
+                    '/g\' nginx/nginx.conf', shell=True)
+    subprocess.call(['sudo', 'cp', 'nginx/nginx.conf', '/etc/nginx/nginx.conf'])
+    subprocess.call(['sudo','service','nginx','restart'])
+
 
 # Parse command line
 def getopts(argv):
@@ -602,6 +621,7 @@ if __name__ == "__main__":
     print 'Installing Nginx...'
     subprocess.call(['sudo','yum','install','nginx'])
     subprocess.call(['sudo','systemctl','start','nginx'])
+    subprocess.call(['sudo', 'systemctl', 'enable', 'nginx'])
 
     # install mongoDB
     print 'Installing MongoDB...'
@@ -619,11 +639,11 @@ if __name__ == "__main__":
                     'mongodb-org.repo > /dev/null', shell=True)
     subprocess.call(['sudo', 'yum', 'install', 'mongodb-org'])
     subprocess.call(['sudo', 'systemctl', 'start', 'mongod'])
+    subprocess.call(['sudo', 'systemctl', 'enable', 'mongod'])
 
-
+    #install git, wget, and node.js
     print 'Installing Git, wget, and Node.js...'
     sleep(1)
-    #install git, wget, and node.js
     subprocess.call(['sudo', 'yum', 'install', 'git'])
     subprocess.call(['sudo', 'yum', 'install', 'wget'])
     subprocess.call(['sudo', 'yum', 'install', 'nodejs'])
