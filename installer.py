@@ -13,6 +13,7 @@ from time import sleep
 import platform
 import json
 import textwrap
+import base64
 
 class Repository:
 
@@ -520,6 +521,7 @@ def configure():
     if not os.path.isfile('/home/centos/dat/default_color_config.json'):
         subprocess.call(['cp', 'dat/default_color_config.json_TEMPLATE', 'dat/default_color_config.json'])
     if os.path.isfile('/home/centos/config_acedirect.json_TEMPLATE'):
+        encoded = 'y'
         subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'],
                         cwd = hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
@@ -533,8 +535,8 @@ def configure():
               'parameters, please refer to dat/parameter_desc.json.'
         encodePrompt = textwrap.fill('Do you want the configuration file config.json to be base64 encoded? (y/n): ',
                                      width=80)
-        encode = raw_input(encodePrompt)
-        if encode == 'y':
+        encoded = raw_input(encodePrompt)
+        if encoded == 'y':
             subprocess.call(['node','hconfig.js', '-n', template], cwd = hashconfig.name)
         else:
             subprocess.call(['node', 'hconfig.js', '-no', template], cwd=hashconfig.name)
@@ -544,14 +546,20 @@ def configure():
         config = json.load(data_file)
     nginx = Repository('nginx',gitSource + '/nginx.git')
     nginx.pull(branch)
-    openam_fqdn = config['openam']['fqdn']
+    if encoded = 'y':
+        openam_fqdn = base64.decode(config['openam']['fqdn'])
+        openam_port = base64.decode(config['openam']['port'])
+        ace_direct_port = base64.decode(config['ace_direct']['https_listen_port'])
+        management_portal_port = base64.decode(config['management_portal']['https_listen_port'])
+    else:
+        openam_fqdn = config['openam']['fqdn']
+        openam_port = config['openam']['port']
+        ace_direct_port = config['ace_direct']['https_listen_port']
+        management_portal_port = config['management_portal']['https_listen_port']
     subprocess.call('sed -i -e \'s/<OPENAM FQDN>/' + openam_fqdn + '/g\' nginx/nginx.conf', shell=True)
-    openam_port = config['openam']['port']
     subprocess.call('sed -i -e \'s/<OPENAM PORT>/' + openam_port + '/g\' nginx/nginx.conf', shell=True)
-    ace_direct_port = config['ace_direct']['https_listen_port']
     subprocess.call('sed -i -e \'s/<ACE DIRECT PORT>/' + ace_direct_port + '/g\' nginx/nginx.conf',
                     shell=True)
-    management_portal_port = config['management_portal']['https_listen_port']
     subprocess.call('sed -i -e \'s/<MANAGEMENT PORTAL PORT>/' + management_portal_port +
                     '/g\' nginx/nginx.conf', shell=True)
     subprocess.call(['sudo', 'cp', 'nginx/nginx.conf', '/etc/nginx/nginx.conf'])
