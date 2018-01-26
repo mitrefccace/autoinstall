@@ -547,10 +547,10 @@ def configure():
     nginx = Repository('nginx',gitSource + '/nginx.git')
     nginx.pull(branch)
     if encoded == 'y':
-        openam_fqdn = base64.decode(config['openam']['fqdn'])
-        openam_port = base64.decode(config['openam']['port'])
-        ace_direct_port = base64.decode(config['ace_direct']['https_listen_port'])
-        management_portal_port = base64.decode(config['management_portal']['https_listen_port'])
+        openam_fqdn = base64.b64decode(config['openam']['fqdn'])
+        openam_port = base64.b64decode(config['openam']['port'])
+        ace_direct_port = base64.b64decode(config['ace_direct']['https_listen_port'])
+        management_portal_port = base64.b64decode(config['management_portal']['https_listen_port'])
     else:
         openam_fqdn = config['openam']['fqdn']
         openam_port = config['openam']['port']
