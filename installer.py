@@ -520,7 +520,7 @@ def configure():
         subprocess.call(['cp', 'dat/color_config.json_TEMPLATE', 'dat/color_config.json'])
     if not os.path.isfile('/home/centos/dat/default_color_config.json'):
         subprocess.call(['cp', 'dat/default_color_config.json_TEMPLATE', 'dat/default_color_config.json'])
-    if os.path.isfile('home/centos/config_acedirect.json_TEMPLATE'):
+    if os.path.isfile('/home/centos/config_acedirect.json_TEMPLATE'):
         encoded = 'y'
         subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'],
                         cwd = hashconfig.name)
