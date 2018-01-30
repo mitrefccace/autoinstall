@@ -516,13 +516,13 @@ def configure_and_start_servers():
 #Configuration
 def configure():
     #configure node servers with config.json
-    if not os.path.isfile('/home/centos/dat/color_config.json'):
+    if not os.path.isfile('~/dat/color_config.json'):
         subprocess.call(['cp', 'dat/color_config.json_TEMPLATE', 'dat/color_config.json'])
-    if not os.path.isfile('/home/centos/dat/default_color_config.json'):
+    if not os.path.isfile('~/dat/default_color_config.json'):
         subprocess.call(['cp', 'dat/default_color_config.json_TEMPLATE', 'dat/default_color_config.json'])
-    if os.path.isfile('/home/centos/config_acedirect.json_TEMPLATE'):
+    if os.path.isfile('~/config_acedirect.json_TEMPLATE'):
         encoded = 'y'
-        subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'],
+        subprocess.call(['node','hconfig.js', '-fn', '~/config_acedirect.json_TEMPLATE'],
                         cwd = hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
     else:
@@ -530,7 +530,7 @@ def configure():
                                        ' use the default file: ',width=80)
         template = raw_input(templatePrompt)
         if template == '':
-            template = '/home/centos/dat/config.json_TEMPLATE'
+            template = '~/dat/config.json_TEMPLATE'
         print 'Please follow prompts to generate the configuration file. For more information about the configuration ' \
               'parameters, please refer to dat/parameter_desc.json.'
         encodePrompt = textwrap.fill('Do you want the configuration file config.json to be base64 encoded? (y/n): ',
@@ -542,7 +542,7 @@ def configure():
             subprocess.call(['node', 'hconfig.js', '-no', template], cwd=hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
     #configure nginx with nginx.conf
-    with open('/home/centos/dat/config.json') as data_file:
+    with open('~/dat/config.json') as data_file:
         config = json.load(data_file)
     nginx = Repository('nginx',gitSource + '/nginx.git')
     nginx.pull(branch)
@@ -665,7 +665,6 @@ if __name__ == "__main__":
 
     #set up hashconfig
     print 'Installing HashConfig tool for configuration process...'
-    #hashconfig = Repository('hashconfig','https://github.com/mitrefccace/hashconfig.git')
     hashconfig = Repository('hashconfig', gitSource + '/hashconfig.git')
     hashconfig.pull(branch)
     hashconfig.install()
@@ -677,6 +676,14 @@ if __name__ == "__main__":
     subprocess.call(['sudo','npm','install','apidoc','-g'])
     sys.stdout.flush()
     sleep(1)
+
+    #pulling script from Asterisk repo
+    out = subprocess.check_output('test -e scripts && echo -n True || echo -n False', shell=True)
+    out_bool = out.lower() in ("true")
+    if not out_bool:
+        subprocess.call('mkdir scripts', shell=True)
+    subprocess.call('git archive --remote=' + gitSource + '/asterisk.git HEAD:scripts itrslookup.sh | tar -x',
+                    shell=True, cwd='scripts')
 
     #stop all processes
     subprocess.call(['pm2','kill'])
