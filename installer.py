@@ -547,15 +547,22 @@ def configure():
     nginx = Repository('nginx',gitSource + '/nginx.git')
     nginx.pull(branch)
     if encoded == 'y':
+        common_private_ip = base64.b64decode(config['common']['private_ip'])
+        common_fqdn = base64.b64decode(config['common']['fqdn'])
         openam_fqdn = base64.b64decode(config['openam']['fqdn'])
+        openam_private_ip = base64.b64decode(config['openam']['private_ip'])
         openam_port = base64.b64decode(config['openam']['port'])
         ace_direct_port = base64.b64decode(config['ace_direct']['https_listen_port'])
         management_portal_port = base64.b64decode(config['management_portal']['https_listen_port'])
     else:
+        common_private_ip = config['common']['private_ip']
+        common_fqdn = config['common']['fqdn']
         openam_fqdn = config['openam']['fqdn']
+        openam_private_ip = config['openam']['private_ip']
         openam_port = config['openam']['port']
         ace_direct_port = config['ace_direct']['https_listen_port']
         management_portal_port = config['management_portal']['https_listen_port']
+    openam_hostname = openam_fqdn.split(',')[0]
     subprocess.call('sed -i -e \'s/<OPENAM FQDN>/' + openam_fqdn + '/g\' nginx/nginx.conf', shell=True)
     subprocess.call('sed -i -e \'s/<OPENAM PORT>/' + openam_port + '/g\' nginx/nginx.conf', shell=True)
     subprocess.call('sed -i -e \'s/<ACE DIRECT PORT>/' + ace_direct_port + '/g\' nginx/nginx.conf',
@@ -564,6 +571,17 @@ def configure():
                     '/g\' nginx/nginx.conf', shell=True)
     subprocess.call(['sudo', 'cp', 'nginx/nginx.conf', '/etc/nginx/nginx.conf'])
     subprocess.call(['sudo','service','nginx','restart'])
+    #modify /etc/hosts
+    subprocess.call(['sudo','mv','/etc/hosts','/etc/hosts_original'])
+    subprocess.call(['sudo','touch','/etc/hosts'])
+    subprocess.call('echo \'127.0.0.1 ' + common_fqdn + ' localhost localhost.localdomain localhost4 localhost4.locald'+
+                    'omain4\' | sudo tee -a /etc/hosts > /dev/null',shell=True)
+    subprocess.call('echo \'' + openam_private_ip + ' ' + openam_hostname + ' ' + openam_fqdn +'\' | sudo tee -a '
+                    + '/etc/hosts > /dev/null', shell=True)
+    subprocess.call('echo \'::1 localhost localhost.localdomain localhost6 localhost6.localdomain6\' | sudo tee -a ' +
+                    '/etc/hosts > /dev/null', shell=True)
+    subprocess.call('echo \'' + common_private_ip + ' ' + common_fqdn + '\' | sudo tee -a /etc/hosts > /dev/null',
+                    shell=True)
 
 
 # Parse command line
