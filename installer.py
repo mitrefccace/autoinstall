@@ -562,7 +562,7 @@ def configure():
         openam_port = config['openam']['port']
         ace_direct_port = config['ace_direct']['https_listen_port']
         management_portal_port = config['management_portal']['https_listen_port']
-    openam_hostname = openam_fqdn.split(',')[0]
+    openam_hostname = openam_fqdn.split('.')[0]
     subprocess.call('sed -i -e \'s/<OPENAM FQDN>/' + openam_fqdn + '/g\' nginx/nginx.conf', shell=True)
     subprocess.call('sed -i -e \'s/<OPENAM PORT>/' + openam_port + '/g\' nginx/nginx.conf', shell=True)
     subprocess.call('sed -i -e \'s/<ACE DIRECT PORT>/' + ace_direct_port + '/g\' nginx/nginx.conf',
