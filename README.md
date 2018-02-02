@@ -1,7 +1,7 @@
 # Automated Installation Script
 This is the README.md file for the automated installation script for ACE Direct. The installation script 
 clones or pulls the necessary repositories from GitHub, and installs required packages and their dependencies,
-including software dependencies such as Node.js, MongoDB, Git, and pm2.
+including software dependencies such as Node.js, Nginx, Redis, MongoDB, Git, and pm2. The script also disables SE Linux, which is required to do in order to run ACE Direct.
 After all repositories are installed, the script prompts the user for editing the global configuration file.
 Finally, it starts the installed and configured servers. The script includes an option to use HashConfig, an 
 automated configuration and encoding tool, during the configuration process. The following diagram visually 
