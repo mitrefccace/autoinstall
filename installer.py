@@ -503,6 +503,10 @@ def virtualagentinstall():
 def disable_se_linux():
     print 'Disabling SE Linux...'
     subprocess.call(['sudo','setsebool','-P','httpd_can_network_connect','1'])
+    print "SE Linux has been disabled. Returning to main menu..."
+    sys.stdout.flush()
+    sleep(2)
+    menu_actions['main_menu']()
 
 #Menu 10
 def exit_script():
