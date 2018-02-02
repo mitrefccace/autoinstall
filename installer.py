@@ -546,7 +546,7 @@ def configure():
         config = json.load(data_file)
     nginx = Repository('nginx',gitSource + '/nginx.git')
     nginx.pull(branch)
-    subprocess.call('sudo','cp','nginx/nginx.conf','/etc/nginx/nginx.conf')
+    subprocess.call(['sudo','cp','nginx/nginx.conf','/etc/nginx/nginx.conf'])
     if encoded == 'y':
         common_private_ip = base64.b64decode(config['common']['private_ip'])
         common_fqdn = base64.b64decode(config['common']['fqdn'])
