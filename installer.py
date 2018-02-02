@@ -546,6 +546,7 @@ def configure():
         config = json.load(data_file)
     nginx = Repository('nginx',gitSource + '/nginx.git')
     nginx.pull(branch)
+    subprocess.call('sudo','cp','nginx/nginx.conf','/etc/nginx/nginx.conf')
     if encoded == 'y':
         common_private_ip = base64.b64decode(config['common']['private_ip'])
         common_fqdn = base64.b64decode(config['common']['fqdn'])
@@ -563,13 +564,12 @@ def configure():
         ace_direct_port = config['ace_direct']['https_listen_port']
         management_portal_port = config['management_portal']['https_listen_port']
     openam_hostname = openam_fqdn.split('.')[0]
-    subprocess.call('sed -i -e \'s/<OPENAM FQDN>/' + openam_fqdn + '/g\' nginx/nginx.conf', shell=True)
-    subprocess.call('sed -i -e \'s/<OPENAM PORT>/' + openam_port + '/g\' nginx/nginx.conf', shell=True)
-    subprocess.call('sed -i -e \'s/<ACE DIRECT PORT>/' + ace_direct_port + '/g\' nginx/nginx.conf',
+    subprocess.call('sudo sed -i -e \'s/<OPENAM FQDN>/' + openam_fqdn + '/g\' /etc/nginx/nginx.conf', shell=True)
+    subprocess.call('sudo sed -i -e \'s/<OPENAM PORT>/' + openam_port + '/g\' /etc/nginx/nginx.conf', shell=True)
+    subprocess.call('sudo sed -i -e \'s/<ACE DIRECT PORT>/' + ace_direct_port + '/g\' /etc/nginx/nginx.conf',
                     shell=True)
-    subprocess.call('sed -i -e \'s/<MANAGEMENT PORTAL PORT>/' + management_portal_port +
-                    '/g\' nginx/nginx.conf', shell=True)
-    subprocess.call(['sudo', 'cp', 'nginx/nginx.conf', '/etc/nginx/nginx.conf'])
+    subprocess.call('sudo sed -i -e \'s/<MANAGEMENT PORTAL PORT>/' + management_portal_port +
+                    '/g\' /etc/nginx/nginx.conf', shell=True)
     subprocess.call(['sudo','service','nginx','restart'])
     #modify /etc/hosts
     subprocess.call(['sudo','mv','/etc/hosts','/etc/hosts_original'])
