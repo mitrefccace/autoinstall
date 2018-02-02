@@ -501,6 +501,7 @@ def virtualagentinstall():
 
 #Menu 9
 def disable_se_linux():
+    print 'Disabling SE Linux...'
     subprocess.call(['sudo','setsebool','-P','httpd_can_network_connect','1'])
 
 #Menu 10
