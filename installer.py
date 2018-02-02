@@ -270,7 +270,9 @@ def quickinstall():
             'min_uptime': '5s'
         })
     print "Virtualagent installation complete."
-    disable_se_linux()
+    print 'Disabling SE Linux...'
+    subprocess.call(['sudo','setsebool','-P','httpd_can_network_connect','1'])
+    print "SE Linux has been disabled."
     configure_and_start_servers()
     return
 
