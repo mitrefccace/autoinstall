@@ -67,7 +67,8 @@ def main_menu():
     print "6. Install Userver"
     print "7. Install Fendesk"
     print "8. Install Virtual Agent"
-    print "9. Exit script without configuration"
+    print "9. Disable SE Linux"
+    print "10. Exit script without configuration"
     print "\n0. Finish installation, begin configuration"
     choice = raw_input(" >>  ")
     exec_menu(choice)
@@ -269,6 +270,7 @@ def quickinstall():
             'min_uptime': '5s'
         })
     print "Virtualagent installation complete."
+    disable_se_linux()
     configure_and_start_servers()
     return
 
@@ -496,8 +498,12 @@ def virtualagentinstall():
     sleep(2)
     menu_actions['main_menu']()
     return
-    
+
 #Menu 9
+def disable_se_linux():
+    subprocess.call(['sudo','setsebool','-P','httpd_can_network_connect','1'])
+
+#Menu 10
 def exit_script():
     print 'Exiting script...'
     sys.exit()
@@ -609,7 +615,8 @@ menu_actions = {
     '6': userverinstall,
     '7': fendeskinstall,
     '8': virtualagentinstall,
-    '9': exit_script,
+    '9': disable_se_linux,
+    '10': exit_script,
     '0': configure_and_start_servers,
 }
  
