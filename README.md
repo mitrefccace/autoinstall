@@ -39,7 +39,7 @@ install. To install all repositories, select the quick install option.
 5. (Optional) For a one-click install, save the properly-configured, decoded configuration file in the /home/centos directory with the
 naming convention "config_acedirect.json_TEMPLATE". Then choose the quick install option.
 
-6. (Optional) To bypass cloning or pulling from Git, the optional command line argument "--ignore-git" can be used. In order for the script to run successfully with this option, the user must manually download all the needed files and directories to the given environment.
+6. (Optional) To bypass cloning or pulling from Git, the optional command line argument "--ignore-git True" can be used. The Git source "-s" and branch "-b" need not be used in this case. In order for the script to run successfully with this option, the user must manually download all the needed files and directories to the given environment.
 
 6. When installation is complete and the script has finished running, a PM2 status window will be displayed with the name of each server and its status. The servers should all have a status "online". To verify successful installation, run the command
 ```sh

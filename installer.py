@@ -640,12 +640,14 @@ if __name__ == "__main__":
     myargs = getopts(sys.argv)
     if '-s' in myargs:  #Git source
         gitSource = myargs['-s']
-	if '-b' in myargs: #Git branch
-		branch = myargs['-b']
+    if '-b' in myargs: #Git branch
+        branch = myargs['-b']
     if '-u' in myargs: #ACE Direct user
         user = myargs['-u']
     if '--ignore-git' in myargs: #Ignore git pull/clone commands
         ignore = True
+        gitSource = 'n/a'
+        branch = 'n/a'
     else:
         ignore = False
     #check operating system
