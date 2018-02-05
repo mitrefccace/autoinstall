@@ -30,14 +30,16 @@ The installation scripts require the following:
 
 4. Run 
 ```sh
-python ./installer.py -s <Git source> -b <Git branch>
+python ./installer.py -s <Git source> -b <Git branch> -u <ACE Direct user>
 ```
-The Git source to be used is "ssh://github.com/mitrefccace", and the latest version should be used for the Git branch.
+The Git source to be used is "ssh://github.com/mitrefccace", and the latest version should be used for the Git branch. The ACE Direct user is the home directory where ACE Direct will be installed, such as "/home/centos".
 While the script is running, follow any user prompts. Select any subset of the repositories to 
 install. To install all repositories, select the quick install option.
 
 5. (Optional) For a one-click install, save the properly-configured, decoded configuration file in the /home/centos directory with the
 naming convention "config_acedirect.json_TEMPLATE". Then choose the quick install option.
+
+6. (Optional) To bypass cloning or pulling from Git, the optional command line argument "--ignore-git" can be used. In order for the script to run successfully with this option, the user must manually download all the needed files and directories to the given environment.
 
 6. When installation is complete and the script has finished running, a PM2 status window will be displayed with the name of each server and its status. The servers should all have a status "online". To verify successful installation, run the command
 ```sh

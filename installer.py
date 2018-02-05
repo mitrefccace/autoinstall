@@ -23,15 +23,16 @@ class Repository:
         self.giturl = giturl
         
     #pull method -- git clone if the repo doesn't exist locally; error message if it does exist locally
-    def pull(self, branch):
-        out = subprocess.check_output('test -e %s && echo -n True || echo -n False' % self.name, shell=True)
-        out_bool = out.lower() in ("true")
-        if out_bool:
-            print 'Directory already exists. Running "git pull"...'
-            subprocess.call('git pull', shell=True, cwd=self.name)
-        else:
-            subprocess.call('git clone %s' % self.giturl, shell=True)
-        subprocess.call('git checkout %s' % branch, shell=True, cwd=self.name)
+    def pull(self, branch, ignore):
+        if not ignore:
+            out = subprocess.check_output('test -e %s && echo -n True || echo -n False' % self.name, shell=True)
+            out_bool = out.lower() in ("true")
+            if out_bool:
+                print 'Directory already exists. Running "git pull"...'
+                subprocess.call('git pull', shell=True, cwd=self.name)
+            else:
+                subprocess.call('git clone %s' % self.giturl, shell=True)
+            subprocess.call('git checkout %s' % branch, shell=True, cwd=self.name)
 
     #install method -- run npm install
     def install(self):
@@ -529,13 +530,13 @@ def configure_and_start_servers():
 #Configuration
 def configure():
     #configure node servers with config.json
-    if not os.path.isfile('/home/centos/dat/color_config.json'):
+    if not os.path.isfile(user + '/dat/color_config.json'):
         subprocess.call(['cp', 'dat/color_config.json_TEMPLATE', 'dat/color_config.json'])
-    if not os.path.isfile('/home/centos/dat/default_color_config.json'):
+    if not os.path.isfile(user + '/dat/default_color_config.json'):
         subprocess.call(['cp', 'dat/default_color_config.json_TEMPLATE', 'dat/default_color_config.json'])
-    if os.path.isfile('/home/centos/config_acedirect.json_TEMPLATE'):
+    if os.path.isfile(user + '/config_acedirect.json_TEMPLATE'):
         encoded = 'y'
-        subprocess.call(['node','hconfig.js', '-fn', '/home/centos/config_acedirect.json_TEMPLATE'],
+        subprocess.call(['node','hconfig.js', '-fn', user + '/config_acedirect.json_TEMPLATE'],
                         cwd = hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
     else:
@@ -543,7 +544,7 @@ def configure():
                                        ' use the default file: ',width=80)
         template = raw_input(templatePrompt)
         if template == '':
-            template = '/home/centos/dat/config.json_TEMPLATE'
+            template = user + '/dat/config.json_TEMPLATE'
         print 'Please follow prompts to generate the configuration file. For more information about the configuration ' \
               'parameters, please refer to dat/parameter_desc.json.'
         encodePrompt = textwrap.fill('Do you want the configuration file config.json to be base64 encoded? (y/n): ',
@@ -554,12 +555,9 @@ def configure():
         else:
             subprocess.call(['node', 'hconfig.js', '-no', template], cwd=hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
-    #configure nginx with nginx.conf
-    with open('/home/centos/dat/config.json') as data_file:
+    #read values from config.json
+    with open(user + '/dat/config.json') as data_file:
         config = json.load(data_file)
-    nginx = Repository('nginx',gitSource + '/nginx.git')
-    nginx.pull(branch)
-    subprocess.call(['sudo','cp','nginx/nginx.conf','/etc/nginx/nginx.conf'])
     if encoded == 'y':
         common_private_ip = base64.b64decode(config['common']['private_ip'])
         common_fqdn = base64.b64decode(config['common']['fqdn'])
@@ -577,13 +575,18 @@ def configure():
         ace_direct_port = config['ace_direct']['https_listen_port']
         management_portal_port = config['management_portal']['https_listen_port']
     openam_hostname = openam_fqdn.split('.')[0]
-    subprocess.call('sudo sed -i -e \'s/<OPENAM FQDN>/' + openam_fqdn + '/g\' /etc/nginx/nginx.conf', shell=True)
-    subprocess.call('sudo sed -i -e \'s/<OPENAM PORT>/' + openam_port + '/g\' /etc/nginx/nginx.conf', shell=True)
-    subprocess.call('sudo sed -i -e \'s/<ACE DIRECT PORT>/' + ace_direct_port + '/g\' /etc/nginx/nginx.conf',
-                    shell=True)
-    subprocess.call('sudo sed -i -e \'s/<MANAGEMENT PORTAL PORT>/' + management_portal_port +
-                    '/g\' /etc/nginx/nginx.conf', shell=True)
-    subprocess.call(['sudo','service','nginx','restart'])
+    #configure nginx.conf
+    if nginxInstall == 'y':
+        nginx = Repository('nginx',gitSource + '/nginx.git')
+        nginx.pull(branch)
+        subprocess.call(['sudo','cp','nginx/nginx.conf','/etc/nginx/nginx.conf'])
+        subprocess.call('sudo sed -i -e \'s/<OPENAM FQDN>/' + openam_fqdn + '/g\' /etc/nginx/nginx.conf', shell=True)
+        subprocess.call('sudo sed -i -e \'s/<OPENAM PORT>/' + openam_port + '/g\' /etc/nginx/nginx.conf', shell=True)
+        subprocess.call('sudo sed -i -e \'s/<ACE DIRECT PORT>/' + ace_direct_port + '/g\' /etc/nginx/nginx.conf',
+                        shell=True)
+        subprocess.call('sudo sed -i -e \'s/<MANAGEMENT PORTAL PORT>/' + management_portal_port +
+                        '/g\' /etc/nginx/nginx.conf', shell=True)
+        subprocess.call(['sudo','service','nginx','restart'])
     #modify /etc/hosts
     subprocess.call(['sudo','mv','/etc/hosts','/etc/hosts_original'])
     subprocess.call(['sudo','touch','/etc/hosts'])
@@ -639,6 +642,10 @@ if __name__ == "__main__":
         gitSource = myargs['-s']
 	if '-b' in myargs: #Git branch
 		branch = myargs['-b']
+    if '-u' in myargs: #ACE Direct user
+        user = myargs['-u']
+    if '--ignore-git' in myargs: #Ignore git pull/clone commands
+        ignore = True
     #check operating system
     if platform.system() != 'Linux':
         print 'Installation script can only be run on Linux. Terminating...'
@@ -658,10 +665,13 @@ if __name__ == "__main__":
     subprocess.call(['sudo', 'systemctl', 'enable', 'redis'])
 
     #Install Nginx
-    print 'Installing Nginx...'
-    subprocess.call(['sudo','yum','install','nginx'])
-    subprocess.call(['sudo','systemctl','start','nginx'])
-    subprocess.call(['sudo', 'systemctl', 'enable', 'nginx'])
+    nginxPrompt = textwrap.fill('Do you want to install Nginx? (y/n): ',width=80)
+    nginxInstall = raw_input(nginxPrompt)
+    if nginxInstall == 'y':
+        print 'Installing Nginx...'
+        subprocess.call(['sudo','yum','install','nginx'])
+        subprocess.call(['sudo','systemctl','start','nginx'])
+        subprocess.call(['sudo', 'systemctl', 'enable', 'nginx'])
 
     # install mongoDB
     print 'Installing MongoDB...'
