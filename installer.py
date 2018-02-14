@@ -730,6 +730,7 @@ if __name__ == "__main__":
         subprocess.call('mkdir scripts', shell=True)
     subprocess.call('git archive --remote=' + gitSource + '/asterisk.git HEAD:scripts itrslookup.sh | tar -x',
                     shell=True, cwd='scripts')
+    subprocess.call(['chmod','755','itrslookup.sh'],cwd='scripts')
 
     #stop all processes
     subprocess.call(['pm2','kill'])
