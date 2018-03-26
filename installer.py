@@ -661,12 +661,15 @@ if __name__ == "__main__":
         quit()
 
     #Install Redis
-    print 'Installing Redis...'
-    subprocess.call(['sudo','yum','install','epel-release'])
-    subprocess.call(['sudo','yum','update'])
-    subprocess.call(['sudo','yum','install','redis'])
-    subprocess.call(['sudo','systemctl','start','redis'])
-    subprocess.call(['sudo', 'systemctl', 'enable', 'redis'])
+    redisPrompt = textwrap.fill('Do you want to install Redis? (y/n): ', width=80)
+    redisInstall = raw_input(redisPrompt)
+    if redisInstall == 'y':
+        print 'Installing Redis...'
+        subprocess.call(['sudo','yum','install','epel-release'])
+        subprocess.call(['sudo','yum','update'])
+        subprocess.call(['sudo','yum','install','redis'])
+        subprocess.call(['sudo','systemctl','start','redis'])
+        subprocess.call(['sudo', 'systemctl', 'enable', 'redis'])
 
     #Install Nginx
     nginxPrompt = textwrap.fill('Do you want to install Nginx? (y/n): ',width=80)
@@ -678,22 +681,25 @@ if __name__ == "__main__":
         subprocess.call(['sudo', 'systemctl', 'enable', 'nginx'])
 
     # install mongoDB
-    print 'Installing MongoDB...'
-    if os.path.isfile('/etc/yum.repos.d/mongodb-org.repo'):
-        subprocess.call(['sudo','rm','/etc/yum.repos.d/mongodb-org.repo'])
-    subprocess.call(['sudo', 'touch', '/etc/yum.repos.d/mongodb-org.repo'])
-    subprocess.call('echo \'[mongodb-org-3.4]\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
-    subprocess.call('echo \'name=MongoDB Repository\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null',
-                    shell=True)
-    subprocess.call('echo \'baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/\' | sudo '
-                    'tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
-    subprocess.call('echo \'gpgcheck=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
-    subprocess.call('echo \'enabled=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
-    subprocess.call('echo \'gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc\' | sudo tee -a /etc/yum.repos.d/'
-                    'mongodb-org.repo > /dev/null', shell=True)
-    subprocess.call(['sudo', 'yum', 'install', 'mongodb-org'])
-    subprocess.call(['sudo', 'systemctl', 'start', 'mongod'])
-    subprocess.call(['sudo', 'systemctl', 'enable', 'mongod'])
+    mongodbPrompt = textwrap.fill('Do you want to install MongoDB? (y/n): ', width=80)
+    mongodbInstall = raw_input(mongodbPrompt)
+    if mongodbInstall == 'y':
+        print 'Installing MongoDB...'
+        if os.path.isfile('/etc/yum.repos.d/mongodb-org.repo'):
+            subprocess.call(['sudo','rm','/etc/yum.repos.d/mongodb-org.repo'])
+        subprocess.call(['sudo', 'touch', '/etc/yum.repos.d/mongodb-org.repo'])
+        subprocess.call('echo \'[mongodb-org-3.4]\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+        subprocess.call('echo \'name=MongoDB Repository\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null',
+                        shell=True)
+        subprocess.call('echo \'baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/\' | sudo '
+                        'tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+        subprocess.call('echo \'gpgcheck=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+        subprocess.call('echo \'enabled=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+        subprocess.call('echo \'gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc\' | sudo tee -a /etc/yum.repos.d/'
+                        'mongodb-org.repo > /dev/null', shell=True)
+        subprocess.call(['sudo', 'yum', 'install', 'mongodb-org'])
+        subprocess.call(['sudo', 'systemctl', 'start', 'mongod'])
+        subprocess.call(['sudo', 'systemctl', 'enable', 'mongod'])
 
     #install git, wget, and node.js
     print 'Installing Git, wget, and Node.js...'
