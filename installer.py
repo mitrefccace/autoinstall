@@ -685,19 +685,22 @@ if __name__ == "__main__":
     mongodbInstall = raw_input(mongodbPrompt)
     if mongodbInstall == 'y':
         print 'Installing MongoDB...'
-        if os.path.isfile('/etc/yum.repos.d/mongodb-org.repo'):
-            subprocess.call(['sudo','rm','/etc/yum.repos.d/mongodb-org.repo'])
-        subprocess.call(['sudo', 'touch', '/etc/yum.repos.d/mongodb-org.repo'])
-        subprocess.call('echo \'[mongodb-org-3.4]\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
-        subprocess.call('echo \'name=MongoDB Repository\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null',
-                        shell=True)
-        subprocess.call('echo \'baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/\' | sudo '
-                        'tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
-        subprocess.call('echo \'gpgcheck=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
-        subprocess.call('echo \'enabled=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
-        subprocess.call('echo \'gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc\' | sudo tee -a /etc/yum.repos.d/'
-                        'mongodb-org.repo > /dev/null', shell=True)
-        subprocess.call(['sudo', 'yum', 'install', 'mongodb-org'])
+        if dist == 'fedora':
+            subprocess.call(['dnf','install','mongod'])
+        else:
+            if os.path.isfile('/etc/yum.repos.d/mongodb-org.repo'):
+                subprocess.call(['sudo','rm','/etc/yum.repos.d/mongodb-org.repo'])
+            subprocess.call(['sudo', 'touch', '/etc/yum.repos.d/mongodb-org.repo'])
+            subprocess.call('echo \'[mongodb-org-3.4]\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+            subprocess.call('echo \'name=MongoDB Repository\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null',
+                            shell=True)
+            subprocess.call('echo \'baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/\' | sudo '
+                            'tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+            subprocess.call('echo \'gpgcheck=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+            subprocess.call('echo \'enabled=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+            subprocess.call('echo \'gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc\' | sudo tee -a /etc/yum.repos.d/'
+                            'mongodb-org.repo > /dev/null', shell=True)
+            subprocess.call(['sudo', 'yum', 'install', 'mongodb-org'])
         subprocess.call(['sudo', 'systemctl', 'start', 'mongod'])
         subprocess.call(['sudo', 'systemctl', 'enable', 'mongod'])
 
