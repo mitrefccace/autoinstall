@@ -654,18 +654,29 @@ if __name__ == "__main__":
     if platform.system() != 'Linux':
         print 'Installation script can only be run on Linux. Terminating...'
         quit()
-    #check distribution    
-    dist = platform.dist()[0]
-    if dist != 'centos' and dist != 'redhat' and dist != 'fedora':
-        print 'Installation script can only be run on CentOS, RedHat, or Fedora. Terminating...'
-        quit()
+    #check distribution
+    if len(subprocess.check_output('grep','"CentOS"','/etc/system-release')) > 0:
+        dist = 'CentOS'
+    elif len(subprocess.check_output('grep','"Fedora"','/etc/system-release')) > 0:
+        dist = 'Fedora'
+    elif len(subprocess.check_output('grep','"RedHat"','/etc/system-release')) > 0:
+        dist = 'RedHat'
+    elif len(subprocess.check_output('grep','"Amazon"','/etc/system-release')) > 0:
+        dist = 'Amazon'
+    else:
+        print 'Your Linux distribution is not supported by this script. Please use CentOS, Fedora, RedHat, or Amazon' \
+              'Linux. Terimnating script...'
 
     #Install Redis
     redisPrompt = textwrap.fill('Do you want to install Redis? (y/n): ', width=80)
     redisInstall = raw_input(redisPrompt)
     if redisInstall == 'y':
         print 'Installing Redis...'
-        subprocess.call(['sudo','yum','install','epel-release'])
+        if dist == "RedHat":
+            subprocess.call('wget','http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm')
+            subprocess.call('rpm','-Uvh','epel-release*.rpm')
+        else:
+            subprocess.call(['sudo','yum','install','epel-release'])
         subprocess.call(['sudo','yum','update'])
         subprocess.call(['sudo','yum','install','redis'])
         subprocess.call(['sudo','systemctl','start','redis'])
@@ -685,7 +696,7 @@ if __name__ == "__main__":
     mongodbInstall = raw_input(mongodbPrompt)
     if mongodbInstall == 'y':
         print 'Installing MongoDB...'
-        if dist == 'fedora':
+        if dist == 'Fedora':
             subprocess.call(['dnf','install','mongod'])
         else:
             if os.path.isfile('/etc/yum.repos.d/mongodb-org.repo'):
