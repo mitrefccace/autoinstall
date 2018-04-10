@@ -31,6 +31,9 @@ The installation scripts require the following:
 4. Run 
 ```sh
 python ./installer.py -s <Git source> -b <Git branch> -u <ACE Direct user>
+
+For example:
+[centos@vademo ~]$ python ./installer.py -s ssh://github.com/mitrefccace -b develop -u /home/centos
 ```
 The Git source to be used is "ssh://github.com/mitrefccace", and the latest version should be used for the Git branch. The ACE Direct user is the home directory where ACE Direct will be installed, such as "/home/centos".
 While the script is running, follow any user prompts. Select any subset of the repositories to 
