@@ -655,13 +655,13 @@ if __name__ == "__main__":
         print 'Installation script can only be run on Linux. Terminating...'
         quit()
     #check distribution
-    if len(subprocess.check_output('grep','"CentOS"','/etc/system-release')) > 0:
+    if len(subprocess.check_output('grep "CentOS" /etc/system-release', shell=True)) > 0:
         dist = 'CentOS'
-    elif len(subprocess.check_output('grep','"Fedora"','/etc/system-release')) > 0:
+    elif len(subprocess.check_output('grep "Fedora" /etc/system-release', shell=True)) > 0:
         dist = 'Fedora'
-    elif len(subprocess.check_output('grep','"RedHat"','/etc/system-release')) > 0:
+    elif len(subprocess.check_output('grep "RedHat" /etc/system-release', shell=True)) > 0:
         dist = 'RedHat'
-    elif len(subprocess.check_output('grep','"Amazon"','/etc/system-release')) > 0:
+    elif len(subprocess.check_output('grep "Amazon" /etc/system-release', shell=True)) > 0:
         dist = 'Amazon'
     else:
         print 'Your Linux distribution is not supported by this script. Please use CentOS, Fedora, RedHat, or Amazon' \
