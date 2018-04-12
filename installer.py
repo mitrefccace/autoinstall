@@ -657,7 +657,7 @@ if __name__ == "__main__":
     #check distribution
     system_release_info = subprocess.check_output(['cat','/etc/system-release'])
     if 'CentOS' in system_release_info:
-        dist = 'CentOs'
+        dist = 'CentOS'
     elif 'Fedora' in system_release_info:
         dist = 'Fedora'
     elif 'RedHat' in system_release_info:
