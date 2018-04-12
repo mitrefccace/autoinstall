@@ -655,13 +655,14 @@ if __name__ == "__main__":
         print 'Installation script can only be run on Linux. Terminating...'
         quit()
     #check distribution
-    if len(subprocess.check_output('grep "CentOS" /etc/system-release', shell=True)) > 0:
-        dist = 'CentOS'
-    elif len(subprocess.check_output('grep "Fedora" /etc/system-release', shell=True)) > 0:
+    system_release_info = subprocess.check_output(['cat','/etc/system-release'])
+    if 'CentOS' in system_release_info:
+        dist = 'CentOs'
+    elif 'Fedora' in system_release_info:
         dist = 'Fedora'
-    elif len(subprocess.check_output('grep "RedHat" /etc/system-release', shell=True)) > 0:
+    elif 'RedHat' in system_release_info:
         dist = 'RedHat'
-    elif len(subprocess.check_output('grep "Amazon" /etc/system-release', shell=True)) > 0:
+    elif 'Amazon' in system_release_info:
         dist = 'Amazon'
     else:
         print 'Your Linux distribution is not supported by this script. Please use CentOS, Fedora, RedHat, or Amazon' \
@@ -718,6 +719,7 @@ if __name__ == "__main__":
     #install git, wget, and node.js
     print 'Installing Git, wget, and Node.js...'
     sleep(1)
+    subprocess.check_output()
     subprocess.call(['sudo', 'yum', 'install', 'git'])
     subprocess.call(['sudo', 'yum', 'install', 'wget'])
     subprocess.call(['sudo', 'yum', 'install', 'nodejs'])
