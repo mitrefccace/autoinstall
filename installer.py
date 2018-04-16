@@ -719,7 +719,6 @@ if __name__ == "__main__":
     #install git, wget, and node.js
     print 'Installing Git, wget, and Node.js...'
     sleep(1)
-    subprocess.check_output()
     subprocess.call(['sudo', 'yum', 'install', 'git'])
     subprocess.call(['sudo', 'yum', 'install', 'wget'])
     subprocess.call(['sudo', 'yum', 'install', 'nodejs'])
