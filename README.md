@@ -36,11 +36,11 @@ For examples:
 python ./installer.py -s <Git source> -b <Git branch> -u <ACE Direct user>
 
 For examples:
-[centos@vademo ~]$ python ./installer.py -s ssh://github.com/mitrefccace -b develop -u /home/centos
+[centos@vademo ~]$ python ./installer.py -s 'ssh://github.com/mitrefccace' -b 'develop' -u '/home/centos'
 or
-[centos@vademo ~]$ python ./installer.py -s ssh://git@git.codev.mitre.org/acrdemo -b develop -u /home/centos
+[centos@vademo ~]$ python ./installer.py -s 'ssh://git@git.codev.mitre.org/acrdemo' -b 'develop' -u '/home/centos'
 ```
-The Git source to be used is "ssh://github.com/mitrefccace", and the latest version should be used for the Git branch. The ACE Direct user is the home directory where ACE Direct will be installed, such as "/home/centos".
+The Git source to be used is 'ssh://github.com/mitrefccace', and the latest version should be used for the Git branch, such as 'develop'. The ACE Direct user is the home directory where ACE Direct will be installed, such as '/home/centos'.
 While the script is running, follow any user prompts. Select any subset of the repositories to 
 install. To install all repositories, select the quick install option.
 
