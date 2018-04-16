@@ -24,18 +24,21 @@ The installation scripts require the following:
 ## Instructions for Use
 1. Open the parent directory where the autoinstall repository will be placed; the home directory is suggested.
 
-2. Clone this repository. 
- 
+2. Clone this repository as yourself but not centos
+```sh
+For examples:
+[cjliu@vasip10 ~]$ git clone ssh://git@git.codev.mitre.org/acrdemo/autoinstall.git
+```
 3. Copy installer.py from the autoinstall directory to the home directory, and enter the home directory.
 
-4. Run 
+4. Run the python installer.py script as centos 
 ```sh
 python ./installer.py -s <Git source> -b <Git branch> -u <ACE Direct user>
 
 For examples:
 [centos@vademo ~]$ python ./installer.py -s ssh://github.com/mitrefccace -b develop -u /home/centos
 or
-[centos@vademo ~]$ python ./installer.py -s ssh://centos@git.codev.mitre.org/acrdemo -b develop -u /home/centos
+[centos@vademo ~]$ python ./installer.py -s ssh://git@git.codev.mitre.org/acrdemo -b develop -u /home/centos
 ```
 The Git source to be used is "ssh://github.com/mitrefccace", and the latest version should be used for the Git branch. The ACE Direct user is the home directory where ACE Direct will be installed, such as "/home/centos".
 While the script is running, follow any user prompts. Select any subset of the repositories to 
