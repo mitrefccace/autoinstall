@@ -738,9 +738,12 @@ if __name__ == "__main__":
     print 'HashConfig installation complete. Installing pm2, bower, and apidoc...'
     sys.stdout.flush()
     sleep(1)
-    subprocess.call(['sudo','npm', 'install', '-g', 'bower'])
-    subprocess.call(['sudo','npm','install','pm2','-g'])
-    subprocess.call(['sudo','npm','install','apidoc','-g'])
+    # cjm-apr18 -- -E arg required for Bedford (MITRE network) & McLean (MITRE network)
+    #              -E is used to obtain environmental parameters (Grant from ECE)
+    subprocess.call(['sudo', '-E', 'npm', 'install', '-g', 'bower'])
+    subprocess.call(['sudo', '-E', 'npm', 'install', '-g', 'pm2'])
+    subprocess.call(['sudo', '-E', 'npm', 'install', '-g', 'apidoc'])
+    # ---------------------------------------------------------------------------------
     sys.stdout.flush()
     sleep(1)
 
