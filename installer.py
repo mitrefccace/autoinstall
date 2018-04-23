@@ -673,7 +673,7 @@ if __name__ == "__main__":
     redisInstall = raw_input(redisPrompt)
     if redisInstall == 'y':
         print 'Installing Redis...'
-        if dist == "RedHat":
+        if dist == "RedHat" or dist == "Amazon":
             subprocess.call('wget','http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm')
             subprocess.call('rpm','-Uvh','epel-release*.rpm')
         else:
@@ -706,8 +706,12 @@ if __name__ == "__main__":
             subprocess.call('echo \'[mongodb-org-3.4]\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
             subprocess.call('echo \'name=MongoDB Repository\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null',
                             shell=True)
-            subprocess.call('echo \'baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/\' | sudo '
-                            'tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+            if dist == 'Amazon':
+                subprocess.call('echo \'baseurl=https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/3.4/x86_64/\' | '
+                                'sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
+            else:
+                subprocess.call('echo \'baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/'
+                                '\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
             subprocess.call('echo \'gpgcheck=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
             subprocess.call('echo \'enabled=1\' | sudo tee -a /etc/yum.repos.d/mongodb-org.repo > /dev/null', shell=True)
             subprocess.call('echo \'gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc\' | sudo tee -a /etc/yum.repos.d/'
