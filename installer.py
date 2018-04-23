@@ -674,8 +674,8 @@ if __name__ == "__main__":
     if redisInstall == 'y':
         print 'Installing Redis...'
         if dist == "RedHat" or dist == "Amazon":
-            subprocess.call('wget','http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm')
-            subprocess.call('rpm','-Uvh','epel-release*.rpm')
+            subprocess.call(['wget','http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm'])
+            subprocess.call(['rpm','-Uvh','epel-release*.rpm'])
         else:
             subprocess.call(['sudo','yum','install','epel-release'])
         subprocess.call(['sudo','yum','update'])
