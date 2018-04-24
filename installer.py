@@ -26,7 +26,7 @@ class Repository:
     def pull(self, branch, ignore):
         if not ignore:
             out = subprocess.check_output('test -e %s && echo -n True || echo -n False' % self.name, shell=True)
-            out_bool = out.lower() in ("true")
+            out_bool = out.lower() in ('true')
             if out_bool:
                 print 'Directory already exists. Running "git pull"...'
                 subprocess.call('git pull', shell=True, cwd=self.name)
@@ -41,7 +41,7 @@ class Repository:
 # Initialize menu options and process.json
 menu_actions  = {} 
 out = subprocess.check_output('test -e process.json && echo -n True || echo -n False', shell=True)
-out_bool = out.lower() in ("true")
+out_bool = out.lower() in ('true')
 if out_bool:
     with open('process.json') as data_file:    
         process = json.load(data_file)
@@ -58,20 +58,20 @@ else:
  
 # Main menu
 def main_menu():   
-    print "Please select one of the following options for installation. When finished, choose option 0 for " \
-          "configuration:"
-    print "1. Quick installation & configuration (all servers)"
-    print "2. Install Agent and Consumer Portals"
-    print "3. Install ACR-CDR"
-    print "4. Install Management Portal"
-    print "5. Install Aserver"
-    print "6. Install Userver"
-    print "7. Install Fendesk"
-    print "8. Install Virtual Agent"
-    print "9. Disable SE Linux"
-    print "10. Exit script without configuration"
-    print "\n0. Finish installation, begin configuration"
-    choice = raw_input(" >>  ")
+    print 'Please select one of the following options for installation. When finished, choose option 0 for ' \
+          'configuration:'
+    print '1. Quick installation & configuration (all servers)'
+    print '2. Install Agent and Consumer Portals'
+    print '3. Install ACR-CDR'
+    print '4. Install Management Portal'
+    print '5. Install Aserver'
+    print '6. Install Userver'
+    print '7. Install Fendesk'
+    print '8. Install Virtual Agent'
+    print '9. Disable SE Linux'
+    print '10. Exit script without configuration'
+    print '\n0. Finish installation, begin configuration'
+    choice = raw_input(' >>  ')
     exec_menu(choice)
     return
  
@@ -84,7 +84,7 @@ def exec_menu(choice):
         try:
             menu_actions[ch]()
         except KeyError:
-            print "Invalid selection, please try again.\n"
+            print 'Invalid selection, please try again.\n'
             menu_actions['main_menu']()
     return
 
@@ -99,7 +99,7 @@ def quickinstall():
     fendesk = Repository('fendesk', gitSource + '/fendesk.git')
     virtualagent = Repository('virtualagent', gitSource + '/virtualagent.git')
     #installation process for ACE Direct
-    print "Installing ACE Direct \n"
+    print 'Installing ACE Direct \n'
     acedirect.pull(branch, ignore)
     acedirect.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
@@ -122,9 +122,9 @@ def quickinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "ACE Direct installation complete."
+    print 'ACE Direct installation complete.'
     #installation process for ACR-CDR
-    print "Installing ACR-CDR \n"
+    print 'Installing ACR-CDR \n'
     acrcdr.pull(branch, ignore)
     acrcdr.install()
     #update process.json: replace existing CDR entry or create new entry
@@ -146,9 +146,9 @@ def quickinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "ACR-CDR installation complete."
+    print 'ACR-CDR installation complete.'
     #installation process for Management Portal
-    print "Installing Management Portal \n"
+    print 'Installing Management Portal \n'
     mgmt.pull(branch, ignore)
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
@@ -171,9 +171,9 @@ def quickinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Management portal installation complete."
+    print 'Management portal installation complete.'
     #installation process for Aserver
-    print "Installing Aserver \n"
+    print 'Installing Aserver \n'
     aserver.pull(branch, ignore)
     aserver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
@@ -196,9 +196,9 @@ def quickinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Aserver installation complete."
+    print 'Aserver installation complete.'
     #installation process for Userver
-    print "Installing Userver \n"
+    print 'Installing Userver \n'
     userver.pull(branch, ignore)
     userver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
@@ -221,9 +221,9 @@ def quickinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Userver installation complete."
+    print 'Userver installation complete.'
     #installation process for Fendesk
-    print "Installing Fendesk \n"
+    print 'Installing Fendesk \n'
     fendesk.pull(branch, ignore)
     fendesk.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
@@ -246,8 +246,8 @@ def quickinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Fendesk installation complete."
-    print "Installing Virtualagent \n"
+    print 'Fendesk installation complete.'
+    print 'Installing Virtualagent \n'
     virtualagent.pull(branch, ignore)
     virtualagent.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
@@ -270,17 +270,17 @@ def quickinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Virtualagent installation complete."
+    print 'Virtualagent installation complete.'
     print 'Disabling SE Linux...'
     subprocess.call(['sudo','setsebool','-P','httpd_can_network_connect','1'])
-    print "SE Linux has been disabled."
+    print 'SE Linux has been disabled.'
     configure_and_start_servers()
     return
 
 # Menu 2
 def acedirectinstall():
     acedirect = Repository('acedirect', gitSource + '/acedirect.git')
-    print "Installing ACE Direct \n"
+    print 'Installing ACE Direct \n'
     acedirect.pull(branch, ignore)
     acedirect.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
@@ -303,7 +303,7 @@ def acedirectinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "ACE Direct installation complete. Returning to main menu..."
+    print 'ACE Direct installation complete. Returning to main menu...'
     sys.stdout.flush()
     sleep(2)
     menu_actions['main_menu']()
@@ -313,7 +313,7 @@ def acedirectinstall():
 # Menu 3
 def acrcdrinstall():
     acrcdr = Repository('acr-cdr', gitSource + '/acr-cdr.git')
-    print "Installing ACR-CDR \n"
+    print 'Installing ACR-CDR \n'
     acrcdr.pull(branch, ignore)
     acrcdr.install()
     #update process.json: replace existing CDR entry or create new entry
@@ -335,7 +335,7 @@ def acrcdrinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "ACR-CDR installation complete. Returning to main menu..."
+    print 'ACR-CDR installation complete. Returning to main menu...'
     sys.stdout.flush()
     sleep(2)
     menu_actions['main_menu']()
@@ -344,7 +344,7 @@ def acrcdrinstall():
 # Menu 4
 def mgmtinstall():
     mgmt = Repository('managementportal', gitSource + '/managementportal.git')
-    print "Installing Management Portal \n"
+    print 'Installing Management Portal \n'
     mgmt.pull(branch, ignore)
     mgmt.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
@@ -367,7 +367,7 @@ def mgmtinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Management portal installation complete. Returning to main menu..."
+    print 'Management portal installation complete. Returning to main menu...'
     sys.stdout.flush()
     sleep(2)
     menu_actions['main_menu']()
@@ -376,7 +376,7 @@ def mgmtinstall():
 # Menu 5
 def aserverinstall():
     aserver = Repository('aserver', gitSource + '/aserver.git')
-    print "Installing Aserver \n"
+    print 'Installing Aserver \n'
     aserver.pull(branch, ignore)
     aserver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = aserver.name)
@@ -399,7 +399,7 @@ def aserverinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Aserver installation complete. Returning to main menu..."
+    print 'Aserver installation complete. Returning to main menu...'
     sys.stdout.flush()
     sleep(2)
     menu_actions['main_menu']()
@@ -408,7 +408,7 @@ def aserverinstall():
 # Menu 6
 def userverinstall():
     userver = Repository('userver', gitSource + '/userver.git')
-    print "Installing Userver \n"
+    print 'Installing Userver \n'
     userver.pull(branch, ignore)
     userver.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = userver.name)
@@ -431,7 +431,7 @@ def userverinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Userver installation complete. Returning to main menu..."
+    print 'Userver installation complete. Returning to main menu...'
     sys.stdout.flush()
     sleep(2)
     menu_actions['main_menu']()
@@ -441,7 +441,7 @@ def userverinstall():
 #     Menu 7
 def fendeskinstall():
     fendesk = Repository('fendesk', gitSource + '/fendesk.git')
-    print "Installing Fendesk \n"
+    print 'Installing Fendesk \n'
     fendesk.pull(branch, ignore)
     fendesk.install()
     subprocess.call(['apidoc','-i','routes/','-o','apidoc/'], cwd = fendesk.name)
@@ -464,7 +464,7 @@ def fendeskinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Fendesk installation complete. Returning to main menu..."
+    print 'Fendesk installation complete. Returning to main menu...'
     sys.stdout.flush()
     sleep(2)
     menu_actions['main_menu']()
@@ -473,7 +473,7 @@ def fendeskinstall():
 # Menu 8
 def virtualagentinstall():
     virtualagent = Repository('virtualagent', gitSource + '/virtualagent.git')
-    print "Installing Virtualagent \n"
+    print 'Installing Virtualagent \n'
     virtualagent.pull(branch, ignore)
     virtualagent.install()
     subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
@@ -496,7 +496,7 @@ def virtualagentinstall():
             'max_restarts': 10,
             'min_uptime': '5s'
         })
-    print "Virtualagent installation complete. Returning to main menu..."
+    print 'Virtualagent installation complete. Returning to main menu...'
     sys.stdout.flush()
     sleep(2)
     menu_actions['main_menu']()
@@ -506,7 +506,7 @@ def virtualagentinstall():
 def disable_se_linux():
     print 'Disabling SE Linux...'
     subprocess.call(['sudo','setsebool','-P','httpd_can_network_connect','1'])
-    print "SE Linux has been disabled. Returning to main menu..."
+    print 'SE Linux has been disabled. Returning to main menu...'
     sys.stdout.flush()
     sleep(2)
     menu_actions['main_menu']()
@@ -635,7 +635,7 @@ menu_actions = {
 # =======================
  
 # Main Program
-if __name__ == "__main__":
+if __name__ == '__main__':
     #import command line args
     myargs = getopts(sys.argv)
     if '-s' in myargs:  #Git source
@@ -673,10 +673,10 @@ if __name__ == "__main__":
     redisInstall = raw_input(redisPrompt)
     if redisInstall == 'y':
         print 'Installing Redis...'
-        if dist == "RedHat" or dist == "Amazon":
+        if dist == 'RedHat' or dist == 'Amazon':
             subprocess.call(['wget','http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm'])
             subprocess.call(['rpm','-Uvh','epel-release*.rpm'])
-        else:
+        elif dist == 'CentOS':
             subprocess.call(['sudo','yum','install','epel-release'])
         subprocess.call(['sudo','yum','update'])
         subprocess.call(['sudo','yum','install','redis'])
@@ -698,7 +698,7 @@ if __name__ == "__main__":
     if mongodbInstall == 'y':
         print 'Installing MongoDB...'
         if dist == 'Fedora':
-            subprocess.call(['dnf','install','mongod'])
+            subprocess.call(['sudo','dnf','install','mongodb','mongodb-server'])
         else:
             if os.path.isfile('/etc/yum.repos.d/mongodb-org.repo'):
                 subprocess.call(['sudo','rm','/etc/yum.repos.d/mongodb-org.repo'])
@@ -753,7 +753,7 @@ if __name__ == "__main__":
 
     #pulling script from Asterisk repo
     out = subprocess.check_output('test -e scripts && echo -n True || echo -n False', shell=True)
-    out_bool = out.lower() in ("true")
+    out_bool = out.lower() in ('true')
     if not out_bool:
         subprocess.call('mkdir scripts', shell=True)
     subprocess.call('git archive --remote=' + gitSource + '/asterisk.git HEAD:scripts itrslookup.sh | tar -x',
