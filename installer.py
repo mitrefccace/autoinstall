@@ -558,6 +558,8 @@ def configure():
     #read values from config.json
     with open(user + '/dat/config.json') as data_file:
         config = json.load(data_file)
+    # cjm-apr18 -- addressing cert/key ownership
+    files_to_chmod = []
     if encoded == 'y':
         common_private_ip = base64.b64decode(config['common']['private_ip'])
         common_fqdn = base64.b64decode(config['common']['fqdn'])
@@ -566,6 +568,9 @@ def configure():
         openam_port = base64.b64decode(config['openam']['port'])
         ace_direct_port = base64.b64decode(config['ace_direct']['https_listen_port'])
         management_portal_port = base64.b64decode(config['management_portal']['https_listen_port'])
+    	# chmod the https cert and key
+	files_to_chmod.append(base64.b64decode(config['common']['https']['certificate']))
+    	files_to_chmod.append(base64.b64decode(config['common']['https']['private_key']))
     else:
         common_private_ip = config['common']['private_ip']
         common_fqdn = config['common']['fqdn']
@@ -574,6 +579,15 @@ def configure():
         openam_port = config['openam']['port']
         ace_direct_port = config['ace_direct']['https_listen_port']
         management_portal_port = config['management_portal']['https_listen_port']
+        # chmod the https cert and key
+        files_to_chmod.append(config['common']['https']['certificate'])
+    	files_to_chmod.append(config['common']['https']['private_key'])
+    
+    # loop over the files and chmod
+    for f in files_to_chmod:
+        ps = subprocess.Popen(['sudo','chmod','644', f], stdout=subprocess.PIPE)
+	(output, err) = ps.communicate()
+    
     openam_hostname = openam_fqdn.split('.')[0]
     #configure nginx.conf
     if nginxInstall == 'y':
