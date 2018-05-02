@@ -585,7 +585,11 @@ def configure():
     
     # loop over the files and chmod
     for f in files_to_chmod:
-        ps = subprocess.Popen(['sudo','chmod','644', f], stdout=subprocess.PIPE)
+        # set ownership
+	ps = subprocess.Popen(['sudo','chown','root:root', f], stdout=subprocess.PIPE)
+	(output, err) = ps.communicate()
+	# set permissions 
+	ps = subprocess.Popen(['sudo','chmod','600', f], stdout=subprocess.PIPE)
 	(output, err) = ps.communicate()
     
     openam_hostname = openam_fqdn.split('.')[0]
