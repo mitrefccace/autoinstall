@@ -11,6 +11,8 @@ describes the installation script.
 
 This repository also contains an optional helper script called nginx_configure.py to be used after running installer.py. In installer.py, the user has the option to edit the ACE Direct configuration file (typically dat/config.json), and after making edits the Nginx configuration file is automatically updated based on the ACE Direct configuration values. If the user wishes to manually make additional changes to dat/config.json after running installer.py, then they can run nginx_configure.py to update the Nginx configuration based on the latest values in dat/config.json.
 
+If Nginx is installed on a different server than the Node server, then nginx_configure.py can be used on the Nginx server. This requires copying the 'dat' configuration directory from the Node server to the Nginx server. It also requires manually cloning the Nginx repository and installing Nginx.
+
 ## Code Structure
 The script installer.py allows the user to install any of the following repositories in any order:
 ACE Direct, ACR-CDR, Management Portal, Aserver, Userver, Fendesk, and Virtual Agent.
@@ -63,7 +65,7 @@ pm2 restart <Name>
 ```
 
 ## Optional Instructions for Use of nginx_configure.py
-0. Make any desired changes to the ACE Direct configuration file. This file is typically located at ~/dat/config.json.
+0. Make any desired changes to the ACE Direct configuration file. This file is typically located at ~/dat/config.json. If Nginx has been installed on a different server than the Node server, then manually copy the dat directory to the home directory on the Nginx server.
 
 1. Copy nginx_configure.py from the autoinstall directory to the home directory, and enter the home directory.
 
