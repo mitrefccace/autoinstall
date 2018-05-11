@@ -65,7 +65,7 @@ python ./installer.py -s <Git source> -b <Git branch> -u <ACE Direct user>
 
 For example:
 [centos@aceserver ~]$ python ./installer.py -s 'ssh://github.com/mitrefccace' -b
- 'develop' -u '/home/centos'
+ 'v2.1' -u '/home/centos'
 ```
 The Git source to be used is 'ssh://github.com/mitrefccace', and the latest vers
 ion should be used for the Git branch, such as 'develop'. The ACE Direct user is
