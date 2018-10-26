@@ -29,6 +29,7 @@ class Repository:
             out_bool = out.lower() in ('true')
             if out_bool:
                 print 'Directory already exists. Running "git pull"...'
+                subprocess.call('git checkout .', shell=True, cwd=self.name)
                 subprocess.call('git pull', shell=True, cwd=self.name)
             else:
                 subprocess.call('git clone %s' % self.giturl, shell=True)
@@ -250,7 +251,7 @@ def quickinstall():
     print 'Installing Virtualagent \n'
     virtualagent.pull(branch, ignore)
     virtualagent.install()
-    subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
+    subprocess.call(['npm','run','build'], cwd = virtualagent.name)
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -476,7 +477,7 @@ def virtualagentinstall():
     print 'Installing Virtualagent \n'
     virtualagent.pull(branch, ignore)
     virtualagent.install()
-    subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
+    subprocess.call(['npm','run','build'], cwd = virtualagent.name)
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -529,6 +530,11 @@ def configure_and_start_servers():
 
 #Configuration
 def configure():
+    #quick option for skipping the configuration step
+    configurePrompt = textwrap.fill('Do you want to go through the configuration process? (y/n): ', width=80)
+    configure = raw_input(configurePrompt)
+    if configure=='n':
+        return
     #configure node servers with config.json
     if not os.path.isfile(user + '/dat/color_config.json'):
         subprocess.call(['cp', 'dat/color_config.json_TEMPLATE', 'dat/color_config.json'])
