@@ -108,7 +108,8 @@ def quickinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'ACE Direct':
-            process['apps'][i]['script'] = './acedirect/adserver.js'
+            process['apps'][i]['script'] = 'adserver.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './acedirect'
             process['apps'][i]['out_file'] = './logs/pm2-adserver.log'
             process['apps'][i]['error_file'] = './logs/pm2-adserver-error.log'
@@ -116,7 +117,8 @@ def quickinstall():
     if updated == False:
         process['apps'].append({
             'name': 'ACE Direct',
-            'script': './acedirect/adserver.js',
+            'script': 'adserver.js',
+            'restart_delay': 5000,
             'cwd': './acedirect',
             'out_file': './logs/pm2-adserver.log',
             'error_file': './logs/pm2-adserver-error.log',
@@ -132,7 +134,8 @@ def quickinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'CDR':
-            process['apps'][i]['script'] = './acr-cdr/app.js'
+            process['apps'][i]['script'] = 'app.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './acr-cdr'
             process['apps'][i]['out_file'] = './logs/pm2-app.log'
             process['apps'][i]['error_file'] = './logs/pm2-app-error.log'
@@ -140,7 +143,8 @@ def quickinstall():
     if updated == False:
         process['apps'].append({
             'name': 'CDR',
-            'script': './acr-cdr/app.js',
+            'script': 'app.js',
+            'restart_delay': 5000,
             'cwd': './acr-cdr',
             'out_file': './logs/pm2-app.log',
             'error_file': './logs/pm2-app-error.log',
@@ -157,7 +161,8 @@ def quickinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Management Dashboard':
-            process['apps'][i]['script'] = './managementportal/server-db.js'
+            process['apps'][i]['script'] = 'server-db.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './managementportal'
             process['apps'][i]['out_file'] = './logs/pm2-server-db.log'
             process['apps'][i]['error_file'] = './logs/pm2-server-db-error.log'
@@ -165,7 +170,8 @@ def quickinstall():
     if updated == False:
         process['apps'].append({
             'name': 'Management Dashboard',
-            'script': './managementportal/server-db.js',
+            'script': 'server-db.js',
+            'restart_delay': 5000,
             'cwd': './managementportal',
             'out_file': './logs/pm2-server-db.log',
             'error_file': './logs/pm2-server-db-error.log',
@@ -182,7 +188,8 @@ def quickinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Aserver':
-            process['apps'][i]['script'] = './aserver/app.js'
+            process['apps'][i]['script'] = 'app.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './aserver'
             process['apps'][i]['out_file'] = './logs/pm2-aserver.log'
             process['apps'][i]['error_file'] = './logs/pm2-aserver-error.log'
@@ -190,7 +197,8 @@ def quickinstall():
     if updated == False:
         process['apps'].append({
             'name': 'Aserver',
-            'script': './aserver/app.js',
+            'script': 'app.js',
+            'restart_delay': 5000,
             'cwd': './aserver',
             'out_file': './logs/pm2-aserver.log',
             'error_file': './logs/pm2-aserver-error.log',
@@ -207,7 +215,8 @@ def quickinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Userver':
-            process['apps'][i]['script'] = './userver/app.js'
+            process['apps'][i]['script'] = 'app.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './userver'
             process['apps'][i]['out_file'] = './logs/pm2-userver.log'
             process['apps'][i]['error_file'] = './logs/pm2-userver-error.log'
@@ -215,7 +224,8 @@ def quickinstall():
     if updated == False:
         process['apps'].append({
             'name': 'Userver',
-            'script': './userver/app.js',
+            'script': 'app.js',
+            'restart_delay': 5000,
             'cwd': './userver',
             'out_file': './logs/pm2-userver.log',
             'error_file': './logs/pm2-userver-error.log',
@@ -232,7 +242,8 @@ def quickinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Fendesk':
-            process['apps'][i]['script'] = './fendesk/app.js'
+            process['apps'][i]['script'] = 'app.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './fendesk'
             process['apps'][i]['out_file'] = './logs/pm2-fendesk.log'
             process['apps'][i]['error_file'] = './logs/pm2-fendesk-error.log'
@@ -240,7 +251,8 @@ def quickinstall():
     if updated == False:
         process['apps'].append({
             'name': 'Fendesk',
-            'script': './fendesk/app.js',
+            'script': 'app.js',
+            'restart_delay': 5000,
             'cwd': './fendesk',
             'out_file': './logs/pm2-fendesk.log',
             'error_file': './logs/pm2-fendesk-error.log',
@@ -256,7 +268,8 @@ def quickinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Virtualagent':
-            process['apps'][i]['script'] = './virtualagent/bin/www'
+            process['apps'][i]['script'] = './bin/www'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './virtualagent'
             process['apps'][i]['out_file'] = './logs/pm2-virtualagent.log'
             process['apps'][i]['error_file'] = './logs/pm2-virtualagent-error.log'
@@ -264,7 +277,8 @@ def quickinstall():
     if updated == False:
         process['apps'].append({
             'name': 'Virtualagent',
-            'script': './virtualagent/bin/www',
+            'script': './bin/www',
+            'restart_delay': 5000,
             'cwd': './virtualagent',
             'out_file': './logs/pm2-virtualagent.log',
             'error_file': './logs/pm2-virtualagent-error.log',
@@ -289,7 +303,8 @@ def acedirectinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'ACE Direct':
-            process['apps'][i]['script'] = './acedirect/adserver.js'
+            process['apps'][i]['script'] = 'adserver.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './acedirect'
             process['apps'][i]['out_file'] = './logs/pm2-adserver.log'
             process['apps'][i]['error_file'] = './logs/pm2-adserver-error.log'
@@ -297,7 +312,8 @@ def acedirectinstall():
     if updated == False:
         process['apps'].append({  
             'name': 'ACE Direct',
-            'script': './acedirect/adserver.js',
+            'script': 'adserver.js',
+            'restart_delay': 5000,
             'cwd': './acedirect',
             'out_file': './logs/pm2-adserver.log',
             'error_file': './logs/pm2-adserver-error.log',
@@ -321,7 +337,8 @@ def acrcdrinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'CDR':
-            process['apps'][i]['script'] = './acr-cdr/app.js'
+            process['apps'][i]['script'] = 'app.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './acr-cdr'
             process['apps'][i]['out_file'] = './logs/pm2-app.log'
             process['apps'][i]['error_file'] = './logs/pm2-app-error.log'
@@ -329,7 +346,8 @@ def acrcdrinstall():
     if updated == False:
         process['apps'].append({  
             'name': 'CDR',
-            'script': './acr-cdr/app.js',
+            'script': 'app.js',
+            'restart_delay': 5000,
             'cwd': './acr-cdr',
             'out_file': './logs/pm2-app.log',
             'error_file': './logs/pm2-app-error.log',
@@ -353,7 +371,8 @@ def mgmtinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Management Dashboard':
-            process['apps'][i]['script'] = './managementportal/server-db.js'
+            process['apps'][i]['script'] = 'server-db.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './managementportal'
             process['apps'][i]['out_file'] = './logs/pm2-server-db.log'
             process['apps'][i]['error_file'] = './logs/pm2-server-db-error.log'
@@ -361,7 +380,8 @@ def mgmtinstall():
     if updated == False:
         process['apps'].append({  
             'name': 'Management Dashboard',
-            'script': './managementportal/server-db.js',
+            'script': 'server-db.js',
+            'restart_delay': 5000,
             'cwd': './managementportal',
             'out_file': './logs/pm2-server-db.log',
             'error_file': './logs/pm2-server-db-error.log',
@@ -385,7 +405,8 @@ def aserverinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Aserver':
-            process['apps'][i]['script'] = './aserver/app.js'
+            process['apps'][i]['script'] = 'app.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './aserver'
             process['apps'][i]['out_file'] = './logs/pm2-aserver.log'
             process['apps'][i]['error_file'] = './logs/pm2-aserver-error.log'
@@ -393,7 +414,8 @@ def aserverinstall():
     if updated == False:
         process['apps'].append({  
             'name': 'Aserver',
-            'script': './aserver/app.js',
+            'script': 'app.js',
+            'restart_delay': 5000,
             'cwd': './aserver',
             'out_file': './logs/pm2-aserver.log',
             'error_file': './logs/pm2-aserver-error.log',
@@ -417,7 +439,8 @@ def userverinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Userver':
-            process['apps'][i]['script'] = './userver/app.js'
+            process['apps'][i]['script'] = 'app.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './userver'
             process['apps'][i]['out_file'] = './logs/pm2-userver.log'
             process['apps'][i]['error_file'] = './logs/pm2-userver-error.log'
@@ -425,7 +448,8 @@ def userverinstall():
     if updated == False:
         process['apps'].append({  
             'name': 'Userver',
-            'script': './userver/app.js',
+            'script': 'app.js',
+            'restart_delay': 5000,
             'cwd': './userver',
             'out_file': './logs/pm2-userver.log',
             'error_file': './logs/pm2-userver-error.log',
@@ -450,7 +474,8 @@ def fendeskinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Fendesk':
-            process['apps'][i]['script'] = './fendesk/app.js'
+            process['apps'][i]['script'] = 'app.js'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './fendesk'
             process['apps'][i]['out_file'] = './logs/pm2-fendesk.log'
             process['apps'][i]['error_file'] = './logs/pm2-fendesk-error.log'
@@ -458,7 +483,8 @@ def fendeskinstall():
     if updated == False:
         process['apps'].append({  
             'name': 'Fendesk',
-            'script': './fendesk/app.js',
+            'script': 'app.js',
+            'restart_delay': 5000,
             'cwd': './fendesk',
             'out_file': './logs/pm2-fendesk.log',
             'error_file': './logs/pm2-fendesk-error.log',
@@ -482,7 +508,8 @@ def virtualagentinstall():
     updated = False
     for i in range(len(process['apps'])):
         if process['apps'][i]['name'] == 'Virtualagent':
-            process['apps'][i]['script'] = './virtualagent/bin/www'
+            process['apps'][i]['script'] = './bin/www'
+            process['apps'][i]['restart_delay'] = 5000
             process['apps'][i]['cwd'] = './virtualagent'
             process['apps'][i]['out_file'] = './logs/pm2-virtualagent.log'
             process['apps'][i]['error_file'] = './logs/pm2-virtualagent-error.log'
@@ -490,7 +517,8 @@ def virtualagentinstall():
     if updated == False:
         process['apps'].append({  
             'name': 'Virtualagent',
-            'script': './virtualagent/bin/www',
+            'script': './bin/www',
+            'restart_delay': 5000,
             'cwd': './virtualagent',
             'out_file': './logs/pm2-virtualagent.log',
             'error_file': './logs/pm2-virtualagent-error.log',
@@ -524,7 +552,7 @@ def configure_and_start_servers():
     configure()
     print 'Writing process.json and starting servers of the installed components...'
     with open('process.json', 'w') as outfile:  
-        json.dump(process, outfile)
+        json.dump(process, outfile, indent=4, separators=(',', ': ') )
     subprocess.call(['pm2','start','process.json'])
     sys.exit()
 
@@ -546,8 +574,8 @@ def configure():
                         cwd = hashconfig.name)
         subprocess.call(['cp', 'hashconfig/config_new.json', 'dat/config.json'])
     else:
-        templatePrompt = textwrap.fill('Please enter the full path to the configuration template file, or press enter to'
-                                       ' use the default file: ',width=80)
+        templatePrompt = textwrap.fill('Enter the full path to a configuration template file, or press enter to'
+                                       ' use the default template: ',width=80)
         template = raw_input(templatePrompt)
         if template == '':
             template = user + '/dat/config.json_TEMPLATE'
@@ -595,7 +623,7 @@ def configure():
 	ps = subprocess.Popen(['sudo','chown','root:root', f], stdout=subprocess.PIPE)
 	(output, err) = ps.communicate()
 	# set permissions 
-	ps = subprocess.Popen(['sudo','chmod','600', f], stdout=subprocess.PIPE)
+	ps = subprocess.Popen(['sudo','chmod','644', f], stdout=subprocess.PIPE)
 	(output, err) = ps.communicate()
     
     openam_hostname = openam_fqdn.split('.')[0]
@@ -604,11 +632,11 @@ def configure():
         nginx = Repository('nginx',gitSource + '/nginx.git')
         nginx.pull(branch, ignore)
         subprocess.call(['sudo','cp','nginx/nginx.conf','/etc/nginx/nginx.conf'])
-        subprocess.call('sudo sed -i -e \'s/<OPENAM FQDN>/' + openam_fqdn + '/g\' /etc/nginx/nginx.conf', shell=True)
-        subprocess.call('sudo sed -i -e \'s/<OPENAM PORT>/' + openam_port + '/g\' /etc/nginx/nginx.conf', shell=True)
-        subprocess.call('sudo sed -i -e \'s/<ACE DIRECT PORT>/' + ace_direct_port + '/g\' /etc/nginx/nginx.conf',
+        subprocess.call('sudo sed -i -e \'s/<OPENAM_FQDN>/' + openam_fqdn + '/g\' /etc/nginx/nginx.conf', shell=True)
+        subprocess.call('sudo sed -i -e \'s/<OPENAM_PORT>/' + openam_port + '/g\' /etc/nginx/nginx.conf', shell=True)
+        subprocess.call('sudo sed -i -e \'s/<ACE_DIRECT_PORT>/' + ace_direct_port + '/g\' /etc/nginx/nginx.conf',
                         shell=True)
-        subprocess.call('sudo sed -i -e \'s/<MANAGEMENT PORTAL PORT>/' + management_portal_port +
+        subprocess.call('sudo sed -i -e \'s/<MANAGEMENT_PORTAL_PORT>/' + management_portal_port +
                         '/g\' /etc/nginx/nginx.conf', shell=True)
         subprocess.call(['sudo','service','nginx','restart'])
     #modify /etc/hosts
