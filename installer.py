@@ -103,7 +103,7 @@ def quickinstall():
     print 'Installing ACE Direct \n'
     acedirect.pull(branch, ignore)
     acedirect.install()
-    subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
+    subprocess.call(['npm','run','build'], cwd = acedirect.name)
     #update process.json: replace existing ACE Direct entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -156,7 +156,7 @@ def quickinstall():
     print 'Installing Management Portal \n'
     mgmt.pull(branch, ignore)
     mgmt.install()
-    subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
+    subprocess.call(['npm','run','build'], cwd = mgmt.name)
     #update process.json: replace existing Management entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -263,6 +263,7 @@ def quickinstall():
     print 'Installing Virtualagent \n'
     virtualagent.pull(branch, ignore)
     virtualagent.install()
+    subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
     subprocess.call(['npm','run','build'], cwd = virtualagent.name)
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
@@ -298,7 +299,7 @@ def acedirectinstall():
     print 'Installing ACE Direct \n'
     acedirect.pull(branch, ignore)
     acedirect.install()
-    subprocess.call(['bower', 'install', '--allow-root'], cwd = acedirect.name)
+    subprocess.call(['npm','run','build'], cwd = acedirect.name)
     #update process.json: replace existing ACE Direct entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -366,7 +367,7 @@ def mgmtinstall():
     print 'Installing Management Portal \n'
     mgmt.pull(branch, ignore)
     mgmt.install()
-    subprocess.call(['bower', 'install', '--allow-root'], cwd = mgmt.name)
+    subprocess.call(['npm','run','build'], cwd = mgmt.name)
     #update process.json: replace existing Management entry or create new entry
     updated = False
     for i in range(len(process['apps'])):
@@ -503,6 +504,7 @@ def virtualagentinstall():
     print 'Installing Virtualagent \n'
     virtualagent.pull(branch, ignore)
     virtualagent.install()
+    subprocess.call(['bower', 'install', '--allow-root'], cwd = virtualagent.name)
     subprocess.call(['npm','run','build'], cwd = virtualagent.name)
     #update process.json: replace existing Fendesk entry or create new entry
     updated = False
